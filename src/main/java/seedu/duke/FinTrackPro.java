@@ -83,7 +83,7 @@ public class FinTrackPro {
             ui.showHelpMessage();
             break;
         case "category":
-//            addCategoryToExpense();
+            //addCategoryToExpense();
             break;
         default:
             ui.printLine("You said: " + userInput);
