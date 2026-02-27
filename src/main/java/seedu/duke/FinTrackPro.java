@@ -29,7 +29,7 @@ public class FinTrackPro {
             name = "friend";
         }
 
-        ui.greet(name);
+        ui.greet(name.trim());
 
         ui.printLine("");
         ui.printLine("Hang tight... I have a few questions for you.");
