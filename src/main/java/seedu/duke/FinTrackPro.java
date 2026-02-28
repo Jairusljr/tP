@@ -94,7 +94,7 @@ public class FinTrackPro {
             ui.showHelpMessage();
             break;
         default:
-            ui.printLine("Unknown command. You said: " + userInput);
+            ui.printLine("You said: " + userInput);
             break;
         }
     }
