@@ -86,12 +86,12 @@ public class InputUtil {
 
             try {
                 BigDecimal amount = new BigDecimal(moneyString);
-                BigDecimal downPayment = amount.multiply(new BigDecimal("0.025"));
+
                 if (amount.compareTo(BigDecimal.ZERO) < 0) {
                     ui.printLine("The amount cannot be negative. Please try again.");
                     continue;
                 }
-                return downPayment;
+                return amount;
             } catch (NumberFormatException e) {
                 ui.printLine("Invalid number. Please try again!");
             }
@@ -132,6 +132,57 @@ public class InputUtil {
 
             } catch (DateTimeParseException e) {
                 ui.printLine("Date format needs to be YYYY-MM-DD (e.g., 2026-12-31). Try again.");
+            }
+        }
+    }
+
+    /**
+     * Prompts the user to enter a contribution ratio and validates the input range.
+     *
+     * <p>Accepted formats:
+     * <ul>
+     * <li>Decimals between 0.0 and 1.0 inclusive (e.g., 0, 1, 0.5, 0.75)</li>
+     * <li>Max 2 decimal places</li>
+     * </ul>
+     * </p>
+     *
+     * <p>Rejected inputs include:
+     * <ul>
+     * <li>Negative numbers (e.g., -0.6)</li>
+     * <li>Values greater than 1 (e.g., 1.1)</li>
+     * <li>More than 2 decimal places (e.g., 0.555)</li>
+     * <li>Non-numeric strings</li>
+     * </ul>
+     * </p>
+     *
+     * <p>This method repeatedly prompts until a valid ratio is received.</p>
+     *
+     * @param ui UI component used for displaying prompts and messages.
+     * @param in Scanner used to read user input.
+     * @param prompt Prompt message shown to the user.
+     * @return A validated {@link BigDecimal} between 0 and 1.
+     */
+    public static BigDecimal readRatio(Ui ui, Scanner in, String prompt) {
+        while (true) {
+            String input = ui.readLine(in, prompt).trim();
+
+            // Regex: Digits followed by a dot and 1-2 digits.
+            // This prevents negative signs (-), symbols, and excessive decimals.
+            if (!input.matches("\\d+(\\.\\d{1,2})?")) {
+                ui.printLine("EH WRONG FORMAT! Enter a decimal between 0 and 1 (e.g., 0.5).");
+                continue;
+            }
+            try {
+                BigDecimal ratio = new BigDecimal(input);
+
+                // Check if between 0.0 & 1.0
+                if (ratio.compareTo(BigDecimal.ZERO) < 0 || ratio.compareTo(BigDecimal.ONE) > 0) {
+                    ui.printLine("Brother...Ratio must be between 0 and 1. Try again!");
+                    continue;
+                }
+                return ratio;
+            } catch (NumberFormatException e) {
+                ui.printLine("Pleaseee input a number. Try again!!!");
             }
         }
     }

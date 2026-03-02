@@ -15,11 +15,14 @@ Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try 
 What is the total value that you and your partner have to pay for the house? (in dollars)
 Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
 What is the total value that you and your partner have to pay for the house? (in dollars)
-Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total value that you and your partner have to pay for the house? (in dollars)
-Bruh I need a valid amount like 10250 or 10250.50 (numbers only, max 2 dp). Try again.
-What is the total value that you and your partner have to pay for the house? (in dollars)
-Sweeeett. Including legal fees, you will need $1,522.50 for the initial downpayment phase
+What is your share of the contribution? (e.g., 0.6 for 60%):
+EH WRONG FORMAT! Enter a decimal between 0 and 1 (e.g., 0.5).
+What is your share of the contribution? (e.g., 0.6 for 60%):
+EH WRONG FORMAT! Enter a decimal between 0 and 1 (e.g., 0.5).
+What is your share of the contribution? (e.g., 0.6 for 60%):
+Total downpayment needed: $1,522.50
+Based on a 60.0% share...
+Your personal contribution needed: $913.50
 When do you need to save this money by? (Enter in format YYYY-MM-DD)
 Deadline must be a future date. Try again.
 When do you need to save this money by? (Enter in format YYYY-MM-DD)
