@@ -103,7 +103,11 @@ public class FinTrackPro {
             handleDelete(userInput);
             break;
         case "list":
-            handleList(userInput);
+            printList();
+            break;
+        case "goal":
+            handleGoal(userInput);
+            break;
         default:
             ui.printLine("You said: " + userInput);
             break;
@@ -167,7 +171,7 @@ public class FinTrackPro {
         ui.printLine("Current Total: $" + expenseList.getTotal());
     }
 
-    private void handleList(String userInput){
+    private void printList(){
         if (expenseList.isEmpty()) {
             ui.printLine("Your expense list is as empty as my wallet. Go spend some money!");
             return;
@@ -182,6 +186,38 @@ public class FinTrackPro {
         }
 
         ui.printLine("Total Expenditure: $" +  expenseList.getTotal());
+    }
+
+    private void handleGoal(String userInput) {
+        String rest = userInput.substring("goal".length()).trim();
+
+        if (rest.isEmpty()) {
+            ui.printLine("Current spending goal: " + InputUtil.formatMoney(profile.getSpendingGoal()));
+            ui.printLine("To update, use: goal <amount>");
+            return;
+        }
+
+        BigDecimal newGoal;
+        try {
+            newGoal = new BigDecimal(rest);
+        } catch (NumberFormatException e) {
+            ui.printLine("Invalid amount! 'goal " + rest + "' is not a number, bro.");
+            return;
+        }
+
+        if (newGoal.compareTo(BigDecimal.ZERO) < 0) {
+            ui.printLine("Goal cannot be negative! You can't budget for negative money!!.");
+            return;
+        }
+
+        profile.setSpendingGoal(newGoal);
+        ui.printLine("Spending goal updated to: " + InputUtil.formatMoney(newGoal));
+
+        BigDecimal totalSpent = expenseList.getTotal();
+        if (totalSpent.compareTo(newGoal) > 0) {
+            ui.printLine("Alert: You've already exceeded this goal by "
+                    + InputUtil.formatMoney(totalSpent.subtract(newGoal)) + "!");
+        }
     }
 
     private void handleSalary(Scanner in) {

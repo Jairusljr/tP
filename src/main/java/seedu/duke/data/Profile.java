@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class Profile {
     private BigDecimal monthlySalary;
     private BigDecimal currentSavings;
+    private BigDecimal spendingGoal;
     private double contributionRatio;
 
     /**
@@ -18,6 +19,7 @@ public class Profile {
         this.monthlySalary = BigDecimal.ZERO;
         this.currentSavings = BigDecimal.ZERO;
         this.contributionRatio = 0.5;
+        this.spendingGoal = BigDecimal.ZERO;
     }
 
     /**
@@ -56,4 +58,15 @@ public class Profile {
         return contributionRatio;
     }
 
+    /**
+     * Sets the user's spending goal.
+     * @param spendingGoal The spending goal amount.
+     */
+    public void setSpendingGoal(BigDecimal spendingGoal) {
+        this.spendingGoal = spendingGoal;
+    }
+
+    public BigDecimal getSpendingGoal() {
+        return spendingGoal;
+    }
 }
