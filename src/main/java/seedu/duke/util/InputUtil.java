@@ -135,4 +135,29 @@ public class InputUtil {
             }
         }
     }
+
+    public static BigDecimal readRatio(Ui ui, Scanner in, String prompt) {
+        while (true) {
+            String input = ui.readLine(in, prompt).trim();
+
+            // Regex: Digits followed by a dot and 1-2 digits.
+            // This prevents negative signs (-), symbols, and excessive decimals.
+            if (!input.matches("\\d+(\\.\\d{1,2})?")) {
+                ui.printLine("EH WRONG FORMAT! Enter a decimal between 0 and 1 (e.g., 0.5).");
+                continue;
+            }
+            try {
+                BigDecimal ratio = new BigDecimal(input);
+
+                // Check if between 0.0 & 1.0
+                if (ratio.compareTo(BigDecimal.ZERO) < 0 || ratio.compareTo(BigDecimal.ONE) > 0) {
+                    ui.printLine("Brother...Ratio must be between 0 and 1. Try again!");
+                    continue;
+                }
+                return ratio;
+            } catch (NumberFormatException e) {
+                ui.printLine("Pleaseee input a number. Try again!!!");
+            }
+        }
+    }
 }

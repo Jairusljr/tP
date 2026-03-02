@@ -394,17 +394,15 @@ public class FinTrackPro {
      * @param in Scanner used to read the user's ratio input.
      */
     private void handleRatio(Scanner in) {
-        double current = profile.getContributionRatio();
-        ui.printLine("Current BTO contribution share: " + (current * 100) + "%");
+        BigDecimal current = profile.getContributionRatio();
 
-        ui.printLine("Enter your new share (e.g., 0.6 for 60%):");
-        try {
-            double newRatio = Double.parseDouble(in.nextLine());
-            profile.setContributionRatio(newRatio);
-            ui.printLine("Contribution ratio updated!");
-        } catch (NumberFormatException e) {
-            ui.printLine("Invalid input. Ratio remains at " + (current * 100) + "%.");
-        }
+        BigDecimal displayPercentage = current.multiply(new BigDecimal("100"));
+        ui.printLine("Current BTO contribution share: " + displayPercentage + "%");
+
+        BigDecimal newRatio = InputUtil.readRatio(ui, in, "Enter your new share (e.g., 0.6 for 60%):");
+
+        profile.setContributionRatio(newRatio);
+        ui.printLine("Contribution ratio updated!");
     }
 
     /**

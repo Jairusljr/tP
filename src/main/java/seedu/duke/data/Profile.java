@@ -11,7 +11,7 @@ public class Profile {
     private BigDecimal currentSavings;
     private BigDecimal spendingGoal;
     private BigDecimal btoGoal;
-    private double contributionRatio;
+    private BigDecimal contributionRatio;
 
     /**
      * Initializes a profile with zero Salary/Savings and a default 50/50 split ratio.
@@ -19,7 +19,7 @@ public class Profile {
     public Profile() {
         this.monthlySalary = BigDecimal.ZERO;
         this.currentSavings = BigDecimal.ZERO;
-        this.contributionRatio = 0.5;
+        this.contributionRatio = new BigDecimal("0.5");
         this.spendingGoal = BigDecimal.ZERO;
         this.btoGoal = BigDecimal.ZERO;
     }
@@ -64,11 +64,11 @@ public class Profile {
      * Sets the individual's share of the BTO cost relative to their partner.
      * @param contributionRatio A decimal representing user's share (e.g. 0.5 for 50%).
      */
-    public void setContributionRatio(double contributionRatio) {
+    public void setContributionRatio(BigDecimal contributionRatio) {
         this.contributionRatio = contributionRatio;
     }
 
-    public double getContributionRatio() {
+    public BigDecimal getContributionRatio() {
         return contributionRatio;
     }
 
