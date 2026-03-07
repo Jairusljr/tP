@@ -446,6 +446,7 @@ public class FinTrackPro {
 
         BigDecimal distance = btoGoal.subtract(currentSavings);
         BigDecimal monthlySurplus = monthlySalary.subtract(totalSpent);
+        LocalDate deadline = profile.getDeadline();
 
         int percentage = 0;
         if (btoGoal.compareTo(BigDecimal.ZERO) > 0) {
@@ -464,10 +465,11 @@ public class FinTrackPro {
             estimate = months + " months";
         }
 
-        ui.printLine("======= BTO Readiness Report ====");
+        ui.printLine("===== BTO Readiness Report =====");
         ui.printLine("User: " + profile.getName());
+        ui.printLine("Dateline: " + deadline);
+        ui.printLine("BTO Goal: " + InputUtil.formatMoney(btoGoal) + " (your share + fees)");
         ui.printLine("Monthly Salary: " + InputUtil.formatMoney(monthlySalary));
-        ui.printLine("Current Goal: " + InputUtil.formatMoney(btoGoal) + " (your share + fees)");
         ui.printLine("Current Savings: " + InputUtil.formatMoney(currentSavings) + " (" + percentage + "% reached)");
         ui.printLine("Distance to Goal: " + InputUtil.formatMoney(distance));
         ui.printLine("Monthly Surplus: " + InputUtil.formatMoney(monthlySurplus));
