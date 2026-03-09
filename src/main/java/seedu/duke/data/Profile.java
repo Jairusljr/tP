@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 /**
  * Manages the user's personal financial data, including income, savings,
- * and specific targets for BTO down payment planning.
+ * and specific targets for BTO downpayment planning.
  */
 public class Profile {
     private String name = "friend";
@@ -125,5 +125,13 @@ public class Profile {
      */
     public BigDecimal getContributionRatio() {
         return contributionRatio;
+    }
+
+    public void reset() {
+        this.name = "friend";
+        this.btoGoal = BigDecimal.ZERO;
+        this.monthlySalary = BigDecimal.ZERO;
+        this.currentSavings = BigDecimal.ZERO;
+        this.contributionRatio = new BigDecimal("0.5");
     }
 }
