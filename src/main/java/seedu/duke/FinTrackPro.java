@@ -3,6 +3,7 @@ package seedu.duke;
 import seedu.duke.data.Expense;
 import seedu.duke.data.Storage;
 import seedu.duke.ui.Ui;
+import seedu.duke.util.BtoCalculator;
 import seedu.duke.util.InputUtil;
 import seedu.duke.data.Profile;
 import seedu.duke.data.ExpenseList;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Scanner;
-import java.math.RoundingMode;
 import java.math.BigDecimal;
 
 /**
@@ -28,12 +28,17 @@ import java.math.BigDecimal;
 public class FinTrackPro {
 
     private final Ui ui;
-    private final Profile profile = new Profile();
-    private final ExpenseList expenseList = new ExpenseList();
-    private final Storage storage = new Storage("fintrack.txt");
+    private final Profile profile;
+    private final ExpenseList expenseList;
+    private final Storage storage;
+    private final CommandHandler handler;
 
     public FinTrackPro(Ui ui) {
-        this.ui = ui;
+        this.ui = new Ui();
+        this.profile = new Profile();
+        this.expenseList = new ExpenseList();
+        this.storage = new Storage("fintrack.txt");
+        this.handler = new CommandHandler(ui, profile, expenseList, storage);
     }
 
     /**
@@ -74,6 +79,7 @@ public class FinTrackPro {
         ui.printLine("");
         ui.printLine("Type 'help' to view my currently supported commands!");
         ui.printLine("Any non-command word would be echoed back to you you you");
+        ui.printLine("Type 'bye' to exit!");
         ui.printLine("");
 
         // Main Command Loop
@@ -183,134 +189,17 @@ public class FinTrackPro {
         String command = Parser.parseCommand(userInput);
 
         switch (command) {
-        case "savings":
-            handleSavings(in);
-            break;
-        case "help":
-            ui.showHelpMessage();
-            break;
-        case "add":
-            handleAdd(userInput);
-            break;
-        case "delete":
-            handleDelete(userInput);
-            break;
-        case "list":
-            printList();
-            break;
-        case "clear":
-            handleClear(in);
-            break;
-        case "summary":
-            handleSummary();
-            break;
-        case "reset":
-            handleReset(in);
-            break;
+        case "add": handler.handleAdd(userInput); break;
+        case "delete": handler.handleDelete(userInput); break;
+        case "list": printList(); break;
+        case "help": ui.showHelpMessage(); break;
+        case "savings": handler.handleSavings(in); break;
+        case "clear": handler.handleClear(in); break;
+        case "summary": handler.handleSummary(); break;
+        case "reset": handler.handleReset(in); break;
         default:
             ui.printLine("You said: " + userInput);
             break;
-        }
-    }
-
-    /**
-     * Adds an expense entry into the {@link ExpenseList}.
-     *
-     * <p>Expected format: {@code add <amount>}</p>
-     * <ul>
-     *   <li>Rejects missing amount</li>
-     *   <li>Rejects non-numeric amount</li>
-     *   <li>Rejects negative values</li>
-     *   <li>Rejects values with more than 2 decimal places</li>
-     * </ul>
-     *
-     * <p>On success, prints the new expense and the updated running total.</p>
-     *
-     * @param userInput Full command line entered by the user (starting with {@code add}).
-     */
-    private void handleAdd(String userInput){
-        String rest = userInput.substring("add".length()).trim();
-        //if there is no input after add
-        if(rest.isEmpty()){
-            ui.printLine("Format: add <value(to 2dp)> bro! where is the MONEHHHH");
-            return;
-        }
-
-        BigDecimal amount;
-
-        try{
-            amount = new BigDecimal(rest);
-        } catch (NumberFormatException e) {
-            ui.printLine("Amount must be a valid number bro! What is this garbage!");
-            return;
-        }
-
-        //Reject negative values
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            ui.printLine("Amount cannot be negative bro who you trying to scam?");
-            return;
-        }
-
-        // Reject >2 decimal places
-        if (amount.scale() > 2) {
-            ui.printLine("Amount must not exceed 2 decimal places bro we dont want your measly cents!");
-            return;
-        }
-
-        expenseList.add(amount);
-
-        ui.printLine("Added expense: $" + amount);
-        ui.printLine("Current Total: $" + expenseList.getTotal());
-
-    }
-
-    /**
-     * Deletes an expense entry from the {@link ExpenseList} by 1-based index.
-     *
-     * <p>Expected format: {@code delete <index>}</p>
-     * <ul>
-     *   <li>Rejects non-integer indices</li>
-     *   <li>Rejects out-of-range indices</li>
-     * </ul>
-     *
-     * <p>On success, prints the removed entry and the updated running total.</p>
-     *
-     * @param userInput Full command line entered by the user (starting with {@code delete}).
-     */
-    private void handleDelete(String userInput){
-        String rest = userInput.substring("delete".length()).trim();
-
-        int index = Parser.parseIndex(rest);
-
-        if (!expenseList.isValidIndex(index)) {
-            ui.printLine("Invalid index bro! do you even know how much you've spent?");
-            return;
-        }
-
-        Expense removed = expenseList.delete(index);
-
-        ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
-        ui.printLine("Current Total: $" + expenseList.getTotal());
-    }
-
-    /**
-     * Clears all expenses from the {@link ExpenseList} after user confirmation.
-     *
-     * <p>This method prompts the user with a confirmation question.
-     * Only a response of {@code "y"} (case-insensitive after trimming) will proceed.</p>
-     *
-     * <p>Side effect: Mutates the {@link ExpenseList} by removing all entries if confirmed.</p>
-     *
-     * @param in Scanner used to read the user's confirmation response.
-     */
-    private void handleClear(Scanner in) {
-        ui.printLine("WARNING: This will permanently delete ALL expenses. Are you sure? (Y/N)");
-        String response = in.nextLine().trim().toLowerCase();
-        if (response.equals("y")) {
-            expenseList.clear();
-            ui.printLine("Expense list has been wiped clean. Fresh start!");
-        } else {
-            ui.printLine("Clear cancelled. Your data is still there, bro.");
         }
     }
 
@@ -337,110 +226,7 @@ public class FinTrackPro {
         }
 
         BigDecimal totalSpent = expenseList.getTotal();
-        ui.printLine("Total Expenditure: $" +  expenseList.getTotal());
+        ui.printLine("Total Expenditure: $" +  totalSpent);
     }
 
-    /**
-     * Adds a specified amount to the user's current total savings.
-     *
-     * @param in Scanner used to read the user's deposit input.
-     */
-    private void handleSavings(Scanner in) {
-        BigDecimal current = profile.getCurrentSavings();
-        ui.printLine("Current total savings: " + InputUtil.formatMoney(current));
-
-        // Prompt for the amount to add
-        BigDecimal depositAmount = InputUtil.readMoney(ui, in, "Enter amount to add to your savings:");
-
-        // Update profile by adding to the current balance
-        BigDecimal updatedSavings = current.add(depositAmount);
-        profile.setCurrentSavings(updatedSavings);
-
-        ui.printLine("");
-        ui.printLine("Transaction successful!");
-        ui.printLine("Added: " + InputUtil.formatMoney(depositAmount));
-        ui.printLine("New total savings: " + InputUtil.formatMoney(updatedSavings));
-        ui.printLine("");
-    }
-
-    /**
-     * Prints a summary "BTO Readiness Report" based on the user's financial profile.
-     *
-     * <p>Computes:
-     * <ul>
-     *   <li>Distance to the BTO goal (goal - current savings)</li>
-     *   <li>Monthly surplus (monthly salary - total spent)</li>
-     *   <li>Percentage progress towards goal</li>
-     *   <li>Estimated time to reach goal in months (ceiling division)</li>
-     * </ul></p>
-     *
-     * <p>If the goal is already reached, prints a success message.
-     * If monthly surplus is zero/negative, prints that the estimate is effectively infinite.</p>
-     */
-    private void handleSummary() {
-        BigDecimal btoGoal = profile.getBtoGoal();
-        BigDecimal currentSavings = profile.getCurrentSavings();
-        BigDecimal monthlySalary = profile.getMonthlySalary();
-        BigDecimal totalSpent = expenseList.getTotal();
-
-        BigDecimal distance = btoGoal.subtract(currentSavings);
-        BigDecimal monthlySurplus = monthlySalary.subtract(totalSpent);
-        LocalDate deadline = profile.getDeadline();
-
-        int percentage = 0;
-        if (btoGoal.compareTo(BigDecimal.ZERO) > 0) {
-            percentage = currentSavings.multiply(BigDecimal.valueOf(100))
-                    .divide(btoGoal, 0, RoundingMode.HALF_UP)
-                    .intValue();
-        }
-
-        String estimate;
-        if (distance.compareTo(BigDecimal.ZERO) <= 0) {
-            estimate = "Reached! Go get that BTO!";
-        } else if (monthlySurplus.compareTo(BigDecimal.ZERO) <= 0) {
-            estimate = "Infinite (Surplus is $0 or negative!)";
-        } else {
-            int months = distance.divide(monthlySurplus, 0, RoundingMode.CEILING).intValue();
-            estimate = months + " months";
-        }
-
-        ui.printLine("===== BTO Readiness Report =====");
-        ui.printLine("User: " + profile.getName());
-        ui.printLine("Dateline: " + deadline);
-        ui.printLine("BTO Goal: " + InputUtil.formatMoney(btoGoal) + " (your share + fees)");
-        ui.printLine("Monthly Salary: " + InputUtil.formatMoney(monthlySalary));
-        ui.printLine("Current Savings: " + InputUtil.formatMoney(currentSavings) + " (" + percentage + "% reached)");
-        ui.printLine("Distance to Goal: " + InputUtil.formatMoney(distance));
-        ui.printLine("Monthly Surplus: " + InputUtil.formatMoney(monthlySurplus));
-        ui.printLine("Estimated Goal Achievement: " + estimate);
-    }
-
-    /**
-     * Completely resets the user profile and expense list after confirmation.
-     * @param in Scanner used for user confirmation.
-     */
-    private void handleReset(Scanner in) {
-        ui.printLine("WARNING: This will wipe your profile and ALL expenses. Continue? (Y/N)");
-        String response = in.nextLine().trim().toLowerCase();
-
-        if (response.equals("y")) {
-            // 1. Reset in-memory objects
-            profile.setName("friend");
-            profile.setBtoGoal(BigDecimal.ZERO);
-            profile.setMonthlySalary(BigDecimal.ZERO);
-            profile.setCurrentSavings(BigDecimal.ZERO);
-            profile.setContributionRatio(new BigDecimal("0.5"));
-            expenseList.clear();
-
-            // 2. Overwrite the save file with the empty data
-            try {
-                storage.save(profile, expenseList);
-                ui.printLine("System reset successful. Please restart or type 'bye' to exit.");
-            } catch (IOException e) {
-                ui.printLine("Error: Could not reset the save file on disk.");
-            }
-        } else {
-            ui.printLine("Reset aborted. Your data is safe!");
-        }
-    }
 }
