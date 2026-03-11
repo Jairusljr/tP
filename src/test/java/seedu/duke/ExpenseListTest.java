@@ -65,5 +65,26 @@ public class ExpenseListTest {
 
         assertFalse(expenseList.isEmpty());
     }
+    /**
+     * Verifies that deleting the only expense leaves the list empty.
+     */
+    @Test
+    void delete_onlyExpense_listBecomesEmpty() {
+        expenseList.add(new BigDecimal("10.00"));
 
+        expenseList.delete(1);
+
+        assertTrue(expenseList.isEmpty());
+    }
+    /**
+     * Verifies that deleting the only expense resets the running total to zero.
+     */
+    @Test
+    void delete_onlyExpense_totalBecomesZero() {
+        expenseList.add(new BigDecimal("10.00"));
+
+        expenseList.delete(1);
+
+        assertEquals(new BigDecimal("0.00"), expenseList.getTotal());
+    }
 }
