@@ -2,6 +2,7 @@ package seedu.duke;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import seedu.duke.data.ExpenseList;
 
 import java.math.BigDecimal;
@@ -30,5 +31,16 @@ public class ExpenseListTest {
         expenseList.add(new BigDecimal("12.50"));
 
         assertEquals(1, expenseList.size());
+    }
+    /*
+    *Verifies whether adding multiple expenses produces the correct total
+     */
+    @Test
+    void add_multipleExpenses_totalIsCorrectSum(){
+        expenseList.add(new BigDecimal("10.00"));
+        expenseList.add(new BigDecimal("5.50"));
+        expenseList.add(new BigDecimal("2.25"));
+
+        assertEquals(new BigDecimal("17.75"), expenseList.getTotal());
     }
 }
