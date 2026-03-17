@@ -203,3 +203,77 @@
 [2026-03-17 13:42:36] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
 [2026-03-17 13:42:36] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
 [2026-03-17 13:42:36] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-17 13:47:06] [INFO] seedu.duke.FinTrackPro - FinTrackPro initialised successfully
+[2026-03-17 13:47:06] [INFO] seedu.duke.FinTrackPro - Application started.
+[2026-03-17 13:47:06] [INFO] seedu.duke.ui.Ui - Displaying welcome message and ASCII logo.
+[2026-03-17 13:47:06] [INFO] seedu.duke.FinTrackPro - Profile and expense data loaded successfully.
+[2026-03-17 13:47:06] [INFO] seedu.duke.FinTrackPro - No existing BTO goal found. Starting initial setup.
+[2026-03-17 13:47:06] [INFO] seedu.duke.FinTrackPro - Starting initial setup workflow.
+[2026-03-17 13:47:06] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is your name?
+[2026-03-17 13:47:12] [INFO] seedu.duke.FinTrackPro - User name captured: Jairus
+[2026-03-17 13:47:12] [INFO] seedu.duke.ui.Ui - Greeting user: Jairus
+[2026-03-17 13:47:12] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: How much do you currently have in savings?
+[2026-03-17 13:47:16] [INFO] seedu.duke.FinTrackPro - Current savings recorded: 10000
+[2026-03-17 13:47:16] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is your monthly salary? (in dollars)
+[2026-03-17 13:47:19] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is the total value that you and your partner have to pay for the house? (in dollars)
+[2026-03-17 13:47:23] [INFO] seedu.duke.FinTrackPro - House price recorded: 1000000
+[2026-03-17 13:47:23] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is your share of the contribution? (e.g., 0.6 for 60%):
+[2026-03-17 13:47:25] [INFO] seedu.duke.FinTrackPro - Contribution ratio recorded: 0.6
+[2026-03-17 13:47:25] [INFO] seedu.duke.FinTrackPro - BTO calculation completed. Total downpayment: 52500.00, user share: 31500.00
+[2026-03-17 13:47:25] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: When do you need to save this money by? (e.g., 2028-10-24)
+[2026-03-17 13:47:42] [INFO] seedu.duke.FinTrackPro - Deadline recorded: 2026-10-10
+[2026-03-17 13:47:42] [INFO] seedu.duke.FinTrackPro - Initial setup workflow completed.
+[2026-03-17 13:47:42] [INFO] seedu.duke.FinTrackPro - Initial setup completed for user: Jairus
+[2026-03-17 13:47:42] [INFO] seedu.duke.FinTrackPro - Entering main command loop.
+[2026-03-17 13:47:46] [INFO] seedu.duke.FinTrackPro - Received user input: list
+[2026-03-17 13:47:46] [INFO] seedu.duke.FinTrackPro - Parsed command: list
+[2026-03-17 13:47:46] [INFO] seedu.duke.FinTrackPro - Executing list command.
+[2026-03-17 13:47:46] [INFO] seedu.duke.FinTrackPro - Expense list requested, but list is empty.
+[2026-03-17 13:47:49] [INFO] seedu.duke.FinTrackPro - Received user input: summary
+[2026-03-17 13:47:49] [INFO] seedu.duke.FinTrackPro - Parsed command: summary
+[2026-03-17 13:47:49] [INFO] seedu.duke.FinTrackPro - Executing summary command.
+[2026-03-17 13:47:49] [INFO] seedu.duke.CommandHandler - handleSummary executed | generating BTO readiness report
+[2026-03-17 13:47:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Jairus
+[2026-03-17 13:47:49] [INFO] seedu.duke.ui.Ui - Rendering SummaryReport for user: Jairus
+[2026-03-17 13:47:49] [INFO] seedu.duke.ui.Ui - SummaryReport display completed.
+[2026-03-17 13:47:57] [INFO] seedu.duke.FinTrackPro - Received user input: add 1000
+[2026-03-17 13:47:57] [INFO] seedu.duke.FinTrackPro - Parsed command: add
+[2026-03-17 13:47:57] [INFO] seedu.duke.FinTrackPro - Executing add command.
+[2026-03-17 13:47:57] [INFO] seedu.duke.CommandHandler - handleAdd succeeded | amount: $1000 | new total: $1000
+[2026-03-17 13:48:00] [INFO] seedu.duke.FinTrackPro - Received user input: list
+[2026-03-17 13:48:00] [INFO] seedu.duke.FinTrackPro - Parsed command: list
+[2026-03-17 13:48:00] [INFO] seedu.duke.FinTrackPro - Executing list command.
+[2026-03-17 13:48:00] [INFO] seedu.duke.FinTrackPro - Printing expense list. Number of expenses: 1
+[2026-03-17 13:48:00] [INFO] seedu.duke.FinTrackPro - Total expenditure calculated: 1000
+[2026-03-17 13:48:04] [INFO] seedu.duke.FinTrackPro - Received user input: summary
+[2026-03-17 13:48:04] [INFO] seedu.duke.FinTrackPro - Parsed command: summary
+[2026-03-17 13:48:04] [INFO] seedu.duke.FinTrackPro - Executing summary command.
+[2026-03-17 13:48:04] [INFO] seedu.duke.CommandHandler - handleSummary executed | generating BTO readiness report
+[2026-03-17 13:48:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Jairus
+[2026-03-17 13:48:04] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-17 13:48:04] [INFO] seedu.duke.ui.Ui - Rendering SummaryReport for user: Jairus
+[2026-03-17 13:48:04] [INFO] seedu.duke.ui.Ui - SummaryReport display completed.
+[2026-03-17 13:48:21] [INFO] seedu.duke.data.Storage - Saving financial data to fintrack.txt
+[2026-03-17 13:48:21] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-17 13:48:21] [INFO] seedu.duke.FinTrackPro - Profile and expense data saved successfully.
+[2026-03-17 13:48:21] [INFO] seedu.duke.FinTrackPro - Application exiting for user: Jairus
+[2026-03-17 13:48:21] [INFO] seedu.duke.ui.Ui - Application exiting for user: Jairus
+[2026-03-17 13:48:24] [INFO] seedu.duke.FinTrackPro - FinTrackPro initialised successfully
+[2026-03-17 13:48:24] [INFO] seedu.duke.FinTrackPro - Application started.
+[2026-03-17 13:48:24] [INFO] seedu.duke.ui.Ui - Displaying welcome message and ASCII logo.
+[2026-03-17 13:48:24] [INFO] seedu.duke.FinTrackPro - Profile and expense data loaded successfully.
+[2026-03-17 13:48:24] [INFO] seedu.duke.FinTrackPro - Existing profile found for user: Jairus
+[2026-03-17 13:48:25] [INFO] seedu.duke.FinTrackPro - Entering main command loop.
+[2026-03-17 13:48:30] [INFO] seedu.duke.FinTrackPro - Received user input: list
+[2026-03-17 13:48:30] [INFO] seedu.duke.FinTrackPro - Parsed command: list
+[2026-03-17 13:48:30] [INFO] seedu.duke.FinTrackPro - Executing list command.
+[2026-03-17 13:48:30] [INFO] seedu.duke.FinTrackPro - Printing expense list. Number of expenses: 1
+[2026-03-17 13:48:30] [INFO] seedu.duke.FinTrackPro - Total expenditure calculated: 1000
+[2026-03-17 13:48:34] [INFO] seedu.duke.FinTrackPro - Received user input: summary
+[2026-03-17 13:48:34] [INFO] seedu.duke.FinTrackPro - Parsed command: summary
+[2026-03-17 13:48:34] [INFO] seedu.duke.FinTrackPro - Executing summary command.
+[2026-03-17 13:48:34] [INFO] seedu.duke.CommandHandler - handleSummary executed | generating BTO readiness report
+[2026-03-17 13:48:34] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Jairus
+[2026-03-17 13:48:34] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-17 13:48:34] [INFO] seedu.duke.ui.Ui - Rendering SummaryReport for user: Jairus
+[2026-03-17 13:48:34] [INFO] seedu.duke.ui.Ui - SummaryReport display completed.
