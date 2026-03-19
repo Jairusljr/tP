@@ -7,8 +7,9 @@ import java.math.BigDecimal;
  * * <p>Each expense maintains a monetary amount.</p>
  */
 public class Expense {
-
+    private final String name;
     private final BigDecimal amount;
+    private final Category category;
 
     /**
      * Constructs a new {@code Expense} with the specified amount.
@@ -16,14 +17,25 @@ public class Expense {
      *
      * @param amount The monetary value of the expense.
      */
-    public Expense(BigDecimal amount) {
+    public Expense(String name, BigDecimal amount, Category category) {
+        //Invariant: Name added must never be null
+        assert name != null && !name.isBlank() : "Expense name should not be null or blank";
         //Invariant: Amount added must never be null
         assert amount != null : "Expense amount should not be null";
-        //Invariant: Amount input must never be negative
+        //Invariant: Amount added must never be negative
         assert amount.compareTo(BigDecimal.ZERO) >= 0 : "Expense amount must be non-negative";
+        //Invariant: Category Added should not be null
+        assert category != null : "Expense category should not be null";
+
+        this.name = name;
         this.amount = amount;
+        this.category = category;
     }
 
+    public String getName() {
+        assert name != null : "Expense name should never be null";
+        return name;
+    }
     /**
      * Gets the monetary amount of this expense.
      *
@@ -34,7 +46,10 @@ public class Expense {
         assert amount != null : "Expense should never be null after construction.";
         return amount;
     }
-
+    public Category getCategory() {
+        assert category != null : "Expense category should never be null";
+        return category;
+    }
     /**
      * Returns a string representation of the expense amount, prefixed with a dollar sign.
      *
