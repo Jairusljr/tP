@@ -11,11 +11,13 @@ public class Expense {
     private final BigDecimal amount;
     private final Category category;
 
+
     /**
-     * Constructs a new {@code Expense} with the specified amount.
-     * The default category is set to "OTHER".
+     * Constructs a new {@code Expense} with the specified name, amount, and category.
      *
-     * @param amount The monetary value of the expense.
+     * @param name Name or description of the expense.
+     * @param amount Monetary value of the expense.
+     * @param category Category assigned to the expense.
      */
     public Expense(String name, BigDecimal amount, Category category) {
         //Invariant: Name added must never be null
@@ -32,6 +34,11 @@ public class Expense {
         this.category = category;
     }
 
+    /**
+     * Returns the name of this expense.
+     *
+     * @return Expense name or description.
+     */
     public String getName() {
         assert name != null : "Expense name should never be null";
         return name;
@@ -46,6 +53,11 @@ public class Expense {
         assert amount != null : "Expense should never be null after construction.";
         return amount;
     }
+    /**
+     * Returns the category of this expense.
+     *
+     * @return Expense category.
+     */
     public Category getCategory() {
         assert category != null : "Expense category should never be null";
         return category;
