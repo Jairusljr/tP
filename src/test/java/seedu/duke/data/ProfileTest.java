@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ProfileTest {
 
@@ -34,5 +35,15 @@ public class ProfileTest {
         BigDecimal testRatio = new BigDecimal("0.60");
         profile.setContributionRatio(testRatio);
         assertEquals(testRatio, profile.getContributionRatio());
+    }
+
+    @Test
+    public void contributionRatio_invalidValue_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> profile.setContributionRatio(new BigDecimal("1.1")));
+    }
+
+    @Test
+    public void monthlyAllowance_negativeValue_throwsAssertionError() {
+        assertThrows(AssertionError.class, () -> profile.setMonthlyAllowance(new BigDecimal("-100")));
     }
 }
