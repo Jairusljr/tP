@@ -29,6 +29,18 @@ public class CommandHandler {
     private final ExpenseList expenseList;
     private final Storage storage;
 
+    private static class AddArguments {
+        private final String name;
+        private final BigDecimal amount;
+        private final Category category;
+
+        private AddArguments(String name, BigDecimal amount, Category category) {
+            this.name = name;
+            this.amount = amount;
+            this.category = category;
+        }
+    }
+
     public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, Storage storage) {
         assert ui != null : "Ui should not be null";
         assert profile != null : "Profile should not be null";
