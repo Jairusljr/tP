@@ -6,7 +6,6 @@ import seedu.duke.ui.Ui;
 import seedu.duke.util.BtoCalculator;
 import seedu.duke.util.InputUtil;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import seedu.duke.data.Profile;
