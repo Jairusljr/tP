@@ -138,6 +138,48 @@ public class CommandHandler {
             ui.printLine("");
         }
     }
+
+    private AddArguments parseAddArguments(String userInput) throws InvalidAmountException {
+        assert userInput != null : "User input should not be null";
+        assert userInput.startsWith("add") : "Input should start with 'add'";
+
+        String rest = userInput.substring("add".length()).trim();
+
+        if (rest.isEmpty()) {
+            logger.warning("handleAdd rejected | reason: empty input");
+            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+        }
+
+        String[] parts = rest.split("\\s+");
+
+        if (parts.length < 3) {
+            logger.warning("handleAdd rejected | reason: insufficient arguments");
+            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+        }
+
+        String categoryString = parts[parts.length - 1];
+        String amountString = parts[parts.length - 2];
+
+        StringBuilder nameBuilder = new StringBuilder();
+        for (int i = 0; i < parts.length - 2; i++) {
+            if (i > 0) {
+                nameBuilder.append(" ");
+            }
+            nameBuilder.append(parts[i]);
+        }
+
+        String name = nameBuilder.toString();
+
+        if (name.isBlank()) {
+            logger.warning("handleAdd rejected | reason: blank expense name");
+            throw new InvalidAmountException("Expense name cannot be empty.\n");
+        }
+
+        BigDecimal amount = parseAmount(amountString);
+        Category category = Category.fromString(categoryString);
+
+        return new AddArguments(name, amount, category);
+    }
     /**
      * Deletes an expense entry from the {@link ExpenseList} by 1-based index.
      *
