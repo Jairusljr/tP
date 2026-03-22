@@ -81,55 +81,20 @@ public class CommandHandler {
         assert userInput.startsWith("add") : "Input should start with 'add'";
 
         try {
-            String rest = userInput.substring("add".length()).trim();
-
-            if (rest.isEmpty()) {
-                logger.warning("handleAdd rejected | reason: empty input");
-                throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
-            }
-
-            String[] parts = rest.split("\\s+");
-
-            if (parts.length < 3) {
-                logger.warning("handleAdd rejected | reason: insufficient arguments");
-                throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
-            }
-
-            String categoryString = parts[parts.length - 1];
-            String amountString = parts[parts.length - 2];
-
-            StringBuilder nameBuilder = new StringBuilder();
-            for (int i = 0; i < parts.length - 2; i++) {
-                if (i > 0) {
-                    nameBuilder.append(" ");
-                }
-                nameBuilder.append(parts[i]);
-            }
-
-            String name = nameBuilder.toString();
-
-            if (name.isBlank()) {
-                logger.warning("handleAdd rejected | reason: blank expense name");
-                throw new InvalidAmountException("Expense name cannot be empty.\n");
-            }
-
-            BigDecimal amount = parseAmount(amountString);
-
-            // To be provided by category implementation
-            Category category = Category.fromString(categoryString);
+            AddArguments args = parseAddArguments(userInput);
 
             BigDecimal oldTotal = expenseList.getTotal();
-            expenseList.add(name, amount, category);
+            expenseList.add(args.name, args.amount, args.category);
 
-            assert expenseList.getTotal().compareTo(oldTotal.add(amount)) == 0
+            assert expenseList.getTotal().compareTo(oldTotal.add(args.amount)) == 0
                     : "Expense total should increase by added amount";
 
-            logger.info("handleAdd succeeded | name: " + name
-                    + " | amount: $" + amount
-                    + " | category: " + category
+            logger.info("handleAdd succeeded | name: " + args.name
+                    + " | amount: $" + args.amount
+                    + " | category: " + args.category
                     + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Added expense: " + new Expense(name, amount, category));
+            ui.printLine("Added expense: " + new Expense(args.name, args.amount, args.category));
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
 
@@ -138,7 +103,19 @@ public class CommandHandler {
             ui.printLine("");
         }
     }
-
+    /**
+     * Parses the arguments of an {@code add} command into an expense name,
+     * amount, and category.
+     *
+     * <p>The final token is treated as the category, the second-last token
+     * as the amount, and all preceding tokens are treated as the expense name.
+     * This allows expense names to contain multiple words.</p>
+     *
+     * @param userInput Full command line entered by the user, beginning with {@code add}.
+     * @return A parsed {@code AddArguments} object containing the expense details.
+     * @throws InvalidAmountException If the input is missing fields, contains a blank name,
+     *                                or contains an invalid amount.
+     */
     private AddArguments parseAddArguments(String userInput) throws InvalidAmountException {
         assert userInput != null : "User input should not be null";
         assert userInput.startsWith("add") : "Input should start with 'add'";
