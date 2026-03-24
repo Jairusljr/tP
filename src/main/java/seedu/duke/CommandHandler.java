@@ -1,11 +1,7 @@
 package seedu.duke;
 
 import seedu.duke.category.Category;
-import seedu.duke.data.Expense;
-import seedu.duke.data.ExpenseList;
-import seedu.duke.data.Profile;
-import seedu.duke.data.Storage;
-import seedu.duke.data.SummaryReport;
+import seedu.duke.data.*;
 import seedu.duke.exception.InvalidAmountException;
 import seedu.duke.exception.InvalidCategoryException;
 import seedu.duke.exception.InvalidIndexException;
@@ -28,29 +24,35 @@ public class CommandHandler {
     private final Ui ui;
     private final Profile profile;
     private final ExpenseList expenseList;
+    private final RecurringExpenseList recurringExpenseList;
     private final Storage storage;
 
     private static class AddArguments {
         private final String name;
         private final BigDecimal amount;
         private final Category category;
+        private final boolean recurring;
 
-        private AddArguments(String name, BigDecimal amount, Category category) {
+        private AddArguments(String name, BigDecimal amount, Category category, boolean recurring) {
             this.name = name;
             this.amount = amount;
             this.category = category;
+            this.recurring = recurring;
         }
     }
 
-    public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, Storage storage) {
+    public CommandHandler(Ui ui, Profile profile, ExpenseList expenseList, RecurringExpenseList recurringExpenseList,
+                          Storage storage) {
         assert ui != null : "Ui should not be null";
         assert profile != null : "Profile should not be null";
         assert expenseList != null : "ExpenseList should not be null";
+        assert recurringExpenseList != null : "RecurringExpenseList should not be null";
         assert storage != null : "Storage should not be null";
 
         this.ui = ui;
         this.profile = profile;
         this.expenseList = expenseList;
+        this.recurringExpenseList = recurringExpenseList;
         this.storage = storage;
     }
 
@@ -83,7 +85,22 @@ public class CommandHandler {
 
         try {
             AddArguments args = parseAddArguments(userInput);
+            if (args.recurring) {
+                int oldSize = recurringExpenseList.size();
+                recurringExpenseList.add(new RecurringExpense(args.name, args.amount, args.category));
 
+                assert recurringExpenseList.size() == oldSize + 1
+                        : "Recurring expense list size should increase by one after add";
+
+                logger.info("handleAdd succeeded | recurring expense | name: " + args.name
+                        + " | amount: $" + args.amount
+                        + " | category: " + args.category);
+
+                ui.printLine("Added recurring expense: " + recurringExpenseList.get(recurringExpenseList.size() - 1));
+                ui.printLine("Recurring Total: $" + recurringExpenseList.getTotal());
+                ui.printLine("");
+                return;
+            }
             BigDecimal oldTotal = expenseList.getTotal();
             expenseList.add(args.name, args.amount, args.category);
 
@@ -129,14 +146,31 @@ public class CommandHandler {
         }
 
         String[] parts = rest.split("\\s+");
+        boolean recurring = parts[parts.length - 1].equalsIgnoreCase("recurring");
 
-        if (parts.length < 3) {
+        if (!recurring && parts.length < 3) {
             logger.warning("handleAdd rejected | reason: insufficient arguments");
-            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
         }
 
-        String categoryString = parts[parts.length - 1];
-        String amountString = parts[parts.length - 2];
+        if (recurring && parts.length < 4) {
+            logger.warning("handleAdd rejected | reason: insufficient arguments for recurring expense");
+            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+        }
+
+        String categoryString;
+        String amountString;
+        int nameEndExclusive;
+
+        if (recurring) {
+            categoryString = parts[parts.length - 2];
+            amountString = parts[parts.length - 3];
+            nameEndExclusive = parts.length - 3;
+        } else {
+            categoryString = parts[parts.length - 1];
+            amountString = parts[parts.length - 2];
+            nameEndExclusive = parts.length - 2;
+        }
 
         StringBuilder nameBuilder = new StringBuilder();
         for (int i = 0; i < parts.length - 2; i++) {
@@ -162,7 +196,7 @@ public class CommandHandler {
         BigDecimal amount = parseAmount(amountString);
         Category category = Category.fromString(categoryString);
 
-        return new AddArguments(name, amount, category);
+        return new AddArguments(name, amount, category, recurring);
     }
     /**
      * Deletes an expense entry from the {@link ExpenseList} by 1-based index.
@@ -219,16 +253,15 @@ public class CommandHandler {
     public void handleClear(Scanner in) {
         assert in != null : "Scanner should not be null";
 
-        ui.printLine("WARNING: This will permanently delete ALL expenses. Are you sure? (Input Y to clear)");
+        ui.printLine("WARNING: This will permanently delete ALL one-off expenses. Are you sure? (Input Y to clear)");
         String response = in.nextLine().trim().toLowerCase();
 
         if (response.equals("y")) {
             expenseList.clear();
 
             // Log at INFO: clearing all expenses is a significant application event
-            logger.info("handleClear executed | all expenses cleared by user confirmation");
-
-            ui.printLine("Expense list has been wiped clean. Fresh start!");
+            logger.info("handleClear executed | all one-off expenses cleared by user confirmation");
+            ui.printLine("Current month's one-off expenses have been wiped clean. Recurring expenses are kept.");
             ui.printLine("");
         } else {
             // Log at INFO: user chose not to clear — still worth recording the decision

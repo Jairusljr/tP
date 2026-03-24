@@ -3,6 +3,7 @@ package seedu.duke;
 import org.junit.jupiter.api.Test;
 import seedu.duke.data.ExpenseList;
 import seedu.duke.data.Profile;
+import seedu.duke.data.RecurringExpenseList;
 import seedu.duke.data.Storage;
 import seedu.duke.exception.InvalidAmountException;
 import seedu.duke.exception.InvalidIndexException;

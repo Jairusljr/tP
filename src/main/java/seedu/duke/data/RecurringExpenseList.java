@@ -65,7 +65,7 @@ public class RecurringExpenseList {
      * @return cumulative total of recurring expenses
      */
     public BigDecimal getTotal() {
-        java.math.BigDecimal total = java.math.BigDecimal.ZERO;
+        BigDecimal total = java.math.BigDecimal.ZERO;
 
         for (RecurringExpense recurringExpense : recurringExpenses) {
             assert recurringExpense != null : "Recurring expense in list must not be null";
@@ -77,24 +77,32 @@ public class RecurringExpenseList {
         return total;
     }
     /**
-     * Applies all recurring expense templates to the given {@link ExpenseList}.
-     *
-     * <p>Each recurring expense template is converted into a concrete expense
-     * by delegating to {@link ExpenseList#add(String, java.math.BigDecimal, seedu.duke.category.Category)}.</p>
-     *
-     * @param expenseList The expense list that will receive the generated expenses.
+     * Removes all recurring expense templates from the list.
      */
-    public void applyTo(ExpenseList expenseList) {
-        assert expenseList != null : "Expense list must not be null";
+    public void clear() {
+        recurringExpenses.clear();
+    }
+    /**
+     * Returns all recurring expenses whose name or category contains the given keyword.
+     *
+     * @param keyword keyword to search for
+     * @return matching recurring expenses
+     */
+    public ArrayList<RecurringExpense> findMatches(String keyword) {
+        assert keyword != null : "Find keyword must not be null";
+
+        ArrayList<RecurringExpense> matches = new ArrayList<>();
+        String normalizedKeyword = keyword.toLowerCase();
 
         for (RecurringExpense recurringExpense : recurringExpenses) {
             assert recurringExpense != null : "Recurring expense in list must not be null";
 
-            expenseList.add(
-                    recurringExpense.getName(),
-                    recurringExpense.getAmount(),
-                    recurringExpense.getCategory()
-            );
+            if (recurringExpense.getName().toLowerCase().contains(normalizedKeyword)
+                    || recurringExpense.getCategory().getName().toLowerCase().contains(normalizedKeyword)) {
+                matches.add(recurringExpense);
+            }
         }
+
+        return matches;
     }
 }

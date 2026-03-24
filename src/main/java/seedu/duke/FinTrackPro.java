@@ -47,7 +47,7 @@ public class FinTrackPro {
         this.expenseList = new ExpenseList();
         this.recurringExpenseList = new RecurringExpenseList();
         this.storage = new Storage("fintrack.txt");
-        this.handler = new CommandHandler(ui, profile, expenseList, storage);
+        this.handler = new CommandHandler(ui, profile, expenseList, recurringExpenseList, storage);
 
         logger.info("FinTrackPro initialised successfully");
     }
