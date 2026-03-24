@@ -10,4 +10,13 @@ public class RecurringExpenseList {
         assert recurringExpense != null : "Recurring expense must not be null";
         recurringExpenses.add(recurringExpense);
     }
+
+    public RecurringExpense delete(int indexInList) {
+        int indexToDelete = indexInList - 1;
+        return recurringExpenses.remove(indexToDelete);
+    }
+
+    public RecurringExpense get(int index) {
+        return recurringExpenses.get(index);
+    }
 }
