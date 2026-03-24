@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import seedu.duke.category.Category;
 /**
  * Represents a recurring expense template.
+ *
+ * <p>A recurring expense is a reusable template that can be converted into
+ * a normal {@link Expense} whenever the application advances to the next month.</p>
+ *
+ * <p>This class is immutable after construction.</p>
  */
 public class RecurringExpense {
 
