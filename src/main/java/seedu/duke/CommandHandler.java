@@ -3,6 +3,7 @@ package seedu.duke;
 import seedu.duke.category.Category;
 import seedu.duke.data.Expense;
 import seedu.duke.data.ExpenseList;
+import seedu.duke.data.MonthlyArchive;
 import seedu.duke.data.Profile;
 import seedu.duke.data.RecurringExpense;
 import seedu.duke.data.RecurringExpenseList;
@@ -119,7 +120,7 @@ public class CommandHandler {
                     + " | new total: $" + expenseList.getTotal());
 
             ui.printLine("Added expense: " + expenseList.get(expenseList.size() - 1));
-            ui.printLine("Current Total: $" + expenseList.getTotal());
+            ui.printLine("Month " + profile.getCurrentMonth() + " Total: $" + expenseList.getTotal());
             ui.printLine("");
 
         } catch (InvalidAmountException | InvalidCategoryException e) {
@@ -593,5 +594,75 @@ public class CommandHandler {
             ui.printLine("");
             break;
         }
+    }
+
+    /**
+     * Handles the 'save' command to archive current month's expenses and advance to next month.
+     *
+     * <p>This method:
+     * <ul>
+     *   <li>Archives the current month's expenses to a file (Month{N})</li>
+     *   <li>Calculates unspent allowance: monthlyAllowance - currentMonthExpenses</li>
+     *   <li>Transfers unspent amount to savings</li>
+     *   <li>Clears the monthly expense list for the next month</li>
+     *   <li>Increments the month counter</li>
+     * </ul>
+     * </p>
+     */
+    public void handleSaveMonth() {
+
+        int currentMonth = profile.getCurrentMonth();
+        BigDecimal monthlyExpenses = expenseList.getTotal();
+        BigDecimal monthlyAllowance = profile.getMonthlyAllowance();
+        BigDecimal unspentAmount = monthlyAllowance.subtract(monthlyExpenses);
+
+        logger.info("handleSaveMonth start | month=" + currentMonth
+                + " | monthlyAllowance=" + monthlyAllowance
+                + " | monthlyExpenses=" + monthlyExpenses
+                + " | unspentAmount=" + unspentAmount);
+
+        // Archive current month's expenses
+        try {
+            MonthlyArchive archive = new MonthlyArchive(".");
+            archive.saveMonthlyExpenses(currentMonth, expenseList);
+            logger.info("Month " + currentMonth + " expenses archived successfully");
+            ui.printLine("Month " + currentMonth + " expenses archived to 'monthly_archives'");
+        } catch (IOException e) {
+            logger.log(java.util.logging.Level.SEVERE,
+                    "Failed to archive Month " + currentMonth + " expenses", e);
+            ui.printLine("Error: Could not archive expenses for Month " + currentMonth);
+            ui.printLine("");
+            return;
+        }
+
+        // Transfer unspent allowance to savings
+        if (unspentAmount.compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal newSavings = profile.getCurrentSavings().add(unspentAmount);
+            profile.setCurrentSavings(newSavings);
+            logger.info("Transferred unspent amount to savings | amount=" + unspentAmount
+                    + " | newSavings=" + newSavings);
+            ui.printLine("Transferred $" + InputUtil.formatMoney(unspentAmount) + " of unspent "
+                    + "allowance to savings");
+        } else if (unspentAmount.compareTo(BigDecimal.ZERO) < 0) {
+            logger.info("Overspent this month | deficit=" + unspentAmount.negate());
+            ui.printLine("You overspent by $" + InputUtil.formatMoney(unspentAmount.negate()));
+        } else {
+            logger.info("No unspent allowance this month");
+            ui.printLine("You spent exactly your monthly allowance");
+        }
+
+        // Clear expense list for next month
+        expenseList.clear();
+        logger.info("Expense list cleared for next month");
+
+        // Advance to next month
+        profile.advanceMonth();
+        int nextMonth = profile.getCurrentMonth();
+        logger.info("Advanced to next month | currentMonth=" + nextMonth);
+
+        ui.printLine("Advanced to Month " + nextMonth);
+        ui.printLine("Current Savings: $" + InputUtil.formatMoney(profile.getCurrentSavings()));
+        ui.printLine("Monthly Allowance: $" + InputUtil.formatMoney(monthlyAllowance));
+        ui.printLine("");
     }
 }
