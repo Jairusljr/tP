@@ -54,13 +54,14 @@ public class Storage {
 
         try (FileWriter fw = new FileWriter(filePath)) {
             // Save Profile (P)
-            fw.write(String.format("P | %s | %s | %s | %s | %s | %s%n",
+            fw.write(String.format("P | %s | %s | %s | %s | %s | %s | %s%n",
                     profile.getName(),
                     profile.getMonthlyAllowance(),
                     profile.getCurrentSavings(),
                     profile.getBtoGoal(),
                     profile.getContributionRatio(),
-                    profile.getDeadline()));
+                    profile.getDeadline(),
+                    profile.getCurrentMonth()));
 
             // Save Expenses (E)
             for (int i = 0; i < expenseList.size(); i++) {
@@ -140,6 +141,16 @@ public class Storage {
                     profile.setBtoGoal(new BigDecimal(parts[4]));
                     profile.setContributionRatio(new BigDecimal(parts[5]));
                     profile.setDeadline(java.time.LocalDate.parse(parts[6]));
+                    // Load month number if available (new format)
+                    if (parts.length >= 8) {
+                        try {
+                            profile.setCurrentMonth(Integer.parseInt(parts[7].trim()));
+                        } catch (NumberFormatException e) {
+                            logger.log(Level.WARNING, "Invalid month number in profile line, using default");
+                            profile.setCurrentMonth(1);
+                        }
+                    }
+                    continue;
                 } else if (parts[0].equals("E")) {
                     if (parts.length == 2) {
                         // Old format: E | amount
