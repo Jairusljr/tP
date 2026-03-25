@@ -102,7 +102,7 @@ Here are your recurring monthly commitments!
 3. grab home $20.00 [TRANSPORT]
 Month 1 Total: $35.00
 
-Total Expenditure (All Months + Recurring): $120.00
+Total Expenditure (All Months + Recurring): $85.00
 
 Expenses sorted by insertion order.
 
@@ -116,7 +116,7 @@ Here are your recurring monthly commitments!
 3. hho $10.00 [FOOD]
 Month 1 Total: $35.00
 
-Total Expenditure (All Months + Recurring): $120.00
+Total Expenditure (All Months + Recurring): $85.00
 
 You said: nextmonth
 
@@ -130,7 +130,7 @@ Here are your recurring monthly commitments!
 3. hho $10.00 [FOOD]
 Month 1 Total: $35.00
 
-Total Expenditure (All Months + Recurring): $120.00
+Total Expenditure (All Months + Recurring): $85.00
 
 Deleted recurring expense #1: [RECURRING][ENTERTAINMENT] netflix $30
 Recurring Total: $20
@@ -144,6 +144,6 @@ Here are your recurring monthly commitments!
 3. hho $10.00 [FOOD]
 Month 1 Total: $35.00
 
-Total Expenditure (All Months + Recurring): $90.00
+Total Expenditure (All Months + Recurring): $55.00
 
 Goodbye James Gosling. Stay disciplined and get that house that you always wanted!
