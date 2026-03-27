@@ -15,5 +15,6 @@ public class Duke {
         Ui ui = new Ui();
         FinTrackPro app = new FinTrackPro(ui);
         app.run();
+        assert false : "dummy assertion set to fail";
     }
 }
