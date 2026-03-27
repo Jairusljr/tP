@@ -146,7 +146,8 @@ public class Storage {
                     }
                 } catch (NumberFormatException | DateTimeParseException | AssertionError e) {
                     // This catches bad numbers, bad dates, AND your Profile's "future date" assertions
-                    logger.log(Level.WARNING, "Skipping corrupted/invalid line: " + line + " | Reason: " + e.getMessage());
+                    logger.log(Level.WARNING, "Skipping corrupted/invalid line: " + line
+                            + " | Reason: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
@@ -157,7 +158,9 @@ public class Storage {
 
     // Helper methods to keep the code clean and readable
     private void loadProfile(Profile profile, String[] parts) {
-        if (parts.length < 7) return;
+        if (parts.length < 7) {
+            return;
+        }
         profile.setName(parts[1]);
         profile.setMonthlyAllowance(new BigDecimal(parts[2]));
         profile.setCurrentSavings(new BigDecimal(parts[3]));
@@ -173,12 +176,15 @@ public class Storage {
         } else if (len == 4) { // New format
             expenseList.add(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3]));
         } else if (len == 5) { // Format with insertion order
-            expenseList.add(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3]), Integer.parseInt(parts[4]));
+            expenseList.add(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3]),
+                    Integer.parseInt(parts[4]));
         }
     }
 
     private void loadRecurring(RecurringExpenseList recurringList, String[] parts) {
-        if (parts.length < 4) return;
+        if (parts.length < 4) {
+            return;
+        }
         recurringList.add(new RecurringExpense(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3])));
     }
 }
