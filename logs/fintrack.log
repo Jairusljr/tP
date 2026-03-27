@@ -622,3 +622,161 @@
 [2026-03-23 23:55:58] [INFO] seedu.duke.FinTrackPro - Profile and expense data loaded successfully.
 [2026-03-23 23:55:58] [INFO] seedu.duke.FinTrackPro - Existing profile found for user: Jairus
 [2026-03-23 23:55:58] [INFO] seedu.duke.FinTrackPro - Entering main command loop.
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit12304646345966559567\large_data.txt
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit9015423087208291393\test_data.txt
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:08:07] [WARNING] seedu.duke.data.Storage - No save file found. Starting fresh.
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit3697414211991078660\special_chars.txt
+[2026-03-27 11:08:07] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit9999683585656750824\large_data.txt
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit3605263831038220843\test_data.txt
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:10:09] [WARNING] seedu.duke.data.Storage - No save file found. Starting fresh.
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit13164612556436993498\special_chars.txt
+[2026-03-27 11:10:09] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [WARNING] seedu.duke.data.SummaryReport - BTO goal is zero; percentage set to 0.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:10:46] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [WARNING] seedu.duke.data.SummaryReport - BTO goal is zero; percentage set to 0.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:12:04] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [WARNING] seedu.duke.data.SummaryReport - BTO goal is zero; percentage set to 0.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:13:49] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [WARNING] seedu.duke.data.SummaryReport - BTO goal is zero; percentage set to 0.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:14:06] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit6437920923938374976\large_data.txt
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit8243611560210648737\test_data.txt
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit1025665037729053337\special_chars.txt
+[2026-03-27 11:14:13] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:14:13] [WARNING] seedu.duke.data.Storage - Skipping malformed expense line: E | Dinner with | Parent | 10.00 | FOOD | 0
+[2026-03-27 11:16:38] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit14666119253341590783\large_data.txt
+[2026-03-27 11:16:38] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:16:38] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit4200751359581918497\test_data.txt
+[2026-03-27 11:16:38] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:17:24] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit3785967575741242372\order_test.txt
+[2026-03-27 11:17:24] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [WARNING] seedu.duke.data.SummaryReport - Monthly surplus is non-positive; cannot estimate completion.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [WARNING] seedu.duke.data.SummaryReport - BTO goal is zero; percentage set to 0.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Distance is zero or negative. Goal marked as reached.
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: friend
+[2026-03-27 11:38:32] [INFO] seedu.duke.data.SummaryReport - Generating SummaryReport for user: Nick
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit12959447181114621228\order_test.txt
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit13090723235839528222\empty_lists.txt
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit6630944483528724714\large_data.txt
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Saving financial data to C:\Users\jairu\AppData\Local\Temp\junit8012680213428954937\test_data.txt
+[2026-03-27 11:39:03] [INFO] seedu.duke.data.Storage - Save successful.
+[2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=startup | expected=run() entry | storagePath=fintrack.txt
+[2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=run.start | expected=show welcome and load persisted data | profileName=friend
+[2026-03-27 11:55:20] [INFO] seedu.duke.ui.Ui - Displaying welcome message and ASCII logo.
+[2026-03-27 11:55:20] [WARNING] seedu.duke.data.Storage - No save file found. Starting fresh.
+[2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=run.load.success | expected=check if initial setup is required | profileName=friend, btoGoal=0, oneOffCount=0, recurringCount=0
+[2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=run.profile.new | expected=perform initial setup workflow | btoGoal=0
+[2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=setup.start | expected=collect name, finances and deadline | scannerReady=true
+[2026-03-27 11:55:20] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is your name?
