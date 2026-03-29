@@ -780,3 +780,9 @@
 [2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=run.profile.new | expected=perform initial setup workflow | btoGoal=0
 [2026-03-27 11:55:20] [INFO] seedu.duke.FinTrackPro - state=setup.start | expected=collect name, finances and deadline | scannerReady=true
 [2026-03-27 11:55:20] [INFO] seedu.duke.ui.Ui - Displaying prompt to user: What is your name?
+[2026-03-29 20:32:05] [INFO] seedu.duke.FinTrackPro - state=startup | expected=run() entry | storagePath=fintrack.txt
+[2026-03-29 20:32:05] [INFO] seedu.duke.FinTrackPro - state=run.start | expected=show welcome and load persisted data | profileName=friend
+[2026-03-29 20:32:05] [INFO] seedu.duke.ui.Ui - Displaying welcome message and ASCII logo.
+[2026-03-29 20:32:05] [INFO] seedu.duke.FinTrackPro - state=run.load.success | expected=check if initial setup is required | profileName=nicholas, btoGoal=12285.00, oneOffCount=0, recurringCount=0
+[2026-03-29 20:32:05] [INFO] seedu.duke.FinTrackPro - state=run.profile.existing | expected=enter command loop | profileName=nicholas, btoGoal=12285.00
+[2026-03-29 20:32:05] [INFO] seedu.duke.FinTrackPro - state=run.command-loop | expected=read command until bye | profileName=nicholas, oneOffCount=0, recurringCount=0

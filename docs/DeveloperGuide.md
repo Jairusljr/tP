@@ -101,6 +101,9 @@ An individual BTO budget planner for university students planning to apply for B
 
 * *BTO (Build-To-Order)* - a subsidised public housing option scheme in Singapore where new flats are constructed only after a sufficient number of units (typically 65-70%) have been pre-booked by applicants
 * *Contribution ratio* - the user's fractional share of the downpayment (0.0 to 1.0)
+* *Recurring expenses* - expenses that occur on a monthly basis following the same rates (eg Netflix subscription of $5.98/month), then you can run `addrecurring Netflix Subscription 5.98 entertainment recurring`
+* *Adjusted Minimum Savings* - minimum amount you need to save per month given your distance to goal and number of months remaining till the deadline 
+* *Estimated Goal Achievement* - number of months you need to take to achieve your goal, given the current month's savings and distance to goal
 
 # 7 Instructions for Manual Testing
 
