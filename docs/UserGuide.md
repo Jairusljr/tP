@@ -164,6 +164,19 @@ Exits the program<br>
 Goodbye nicholas. Stay disciplined and get that house that you always wanted!
 ```
 
+### Archive monthly expenditures: ```save```
+Saves the current month of expenditures into monthly_archives, and resets the expenditure to 0, simulating a new month.<br>
+<b>Format:</b> ```save``` <br>
+<b>Example of Usage:</b> ```save``` <br>
+<b>Expected Output:</b>
+```
+Month 1 expenses archived to 'monthly_archives'
+Transferred $3,975.00 of unspent allowance to savings
+Advanced to Month 2
+Current Savings: $4,975.00
+Monthly Allowance: $4,000.00
+```
+
 ### Data Storage
 Stores the data in relative path as 'fintrack.txt'<br>
 <b>NOTE:</b> The saving of data into storage will only be done after you type 'bye'<br>
