@@ -185,6 +185,7 @@ This sequence diagram shows that the system uses the same command entry point fo
 to different data structures depending on whether the recurring flag is present.
 
 ![Sequence Diagram](diagram/DeleteOneExpense-SequenceDiagram.png)
+
 The above sequence diagram illustrates how the system handles the deletion of a one-off expense.
 
 The interaction begins when the User enters the delete command. FinTrackPro receives the input and invokes handleCommand, 
@@ -198,6 +199,7 @@ Finally, CommandHandler uses the Ui to display confirmation that the expense has
 total expenditure.
 
 ![Sequence Diagram](diagram/DeleteRecurringExpense-SequenceDiagram.png)
+
 The above sequence diagram illustrates how the system handles the deletion of a recurring expense.
 
 The interaction begins when the User enters the deleterecurring command. FinTrackPro receives the input and invokes 
