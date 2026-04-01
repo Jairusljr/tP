@@ -41,8 +41,6 @@ Let's get started!
 * [Command Summary](#command-summary)
 * [Enquiry](#enquiry)
 
-**NOTE:** If any of the commands cannot be executed, it will just be echoed back to you!
-
 ### Viewing Help: ```help```
 Shows a message explaining how to access the help page, lists all commands. 
 
