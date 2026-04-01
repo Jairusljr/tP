@@ -123,5 +123,6 @@ PRs reviewed:
 - [PR #2](https://github.com/AY2526S2-CS2113-T14-2/tp/pull/2)
 - [PR #1](https://github.com/AY2526S2-CS2113-T14-2/tp/pull/1)
 
-## Contributions beyond the project team: 
+---
+### Contributions beyond the project team: 
 **NIL**
