@@ -272,6 +272,20 @@ public class SummaryReportTest {
     }
 
     @Test
+    void summaryReport_pastDeadline_doesNotCrash() {
+        Profile profile = new Profile();
+        profile.setBtoGoal(new BigDecimal("10000"));
+        profile.setCurrentSavings(new BigDecimal("2000"));
+        profile.setMonthlyAllowance(new BigDecimal("4000"));
+        profile.setDeadline(LocalDate.now().minusMonths(3));
+
+        // Should not throw AssertionError — monthsLeft clamped to 1 in SummaryReport
+        SummaryReport report = new SummaryReport(profile, new ExpenseList(), new RecurringExpenseList());
+
+        assertEquals(new BigDecimal("8000.00"), report.monthlyRequired);
+    }
+
+    @Test
     void summaryReport_zeroExpenditure_surplusEqualsAllowance() {
         Profile profile = new Profile();
         profile.setMonthlyAllowance(new BigDecimal("2500"));

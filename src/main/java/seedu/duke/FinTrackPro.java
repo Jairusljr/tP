@@ -421,8 +421,11 @@ public class FinTrackPro {
                     totalAllMonths = totalAllMonths.add(monthTotal);
                 }
             } catch (IOException e) {
-                logger.log(java.util.logging.Level.WARNING, 
+                logger.log(java.util.logging.Level.WARNING,
                     "Failed to load archived expenses for Month " + month, e);
+            } catch (NumberFormatException e) {
+                logger.log(java.util.logging.Level.WARNING,
+                    "Corrupted amount in archive for Month " + month + ": " + e.getMessage(), e);
             }
         }
 
