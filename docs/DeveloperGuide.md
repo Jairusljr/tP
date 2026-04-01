@@ -37,8 +37,8 @@ strategies employed in the development of FinTrackPro.
    * **5.4 [Usability](#54-usability)**
    * **5.5 [Environment](#55-environment)**
 * **6. [Glossary](#6-glossary)**
-* **7. [Instructions For Manual Testing](#7-instructions-for-manual-testing)**
-   * **7.1 [Test Cases](#71-test-cases)**
+* **7. [Instructions for Manual Testing](#7-instructions-for-manual-testing)**
+   * **7.1 [Test cases](#71-test-cases)**
       * **7.1.1 [Managing Expenses](#managing-expenses-1)**
       * **7.1.2 [Sorting Expenses](#sorting-expenses-1)**
       * **7.1.3 [Managing Profile](#managing-profile-1)**
@@ -147,12 +147,13 @@ The sections below give more concrete details about each component.
 ## 3.2 UML Diagrams
 In this section, we will present the UML class diagrams, object diagrams and sequence diagrams to 
 illustrate how each main component of FinTrackPro integrates with the rest of the codebase.
+
 ### Managing Expenses
 ![Class Diagram](diagram/Expense-ClassDiagram.png)
 The above class diagram illustrates the overall design of the expense management system and the classes that directly participate 
 in handling user commands and managing expense data.
 
-FinTrackPro serves as the main controller of the application. It coordinates between the user interface(Ui), the command
+FinTrackPro serves as the main controller of the application. It coordinates between the user interface (Ui), the command
 processing component (CommandHandler), and the data storage structures (ExpenseList and RecurringExpenseList). It receives
 user input and delegates command execution accordingly.
 
@@ -191,7 +192,7 @@ This sequence diagram shows that the system uses the same command entry point fo
 to different data structures depending on whether the recurring flag is present.
 
 
-#### Delete one off expenses
+#### Delete one-off expenses
 ![Sequence Diagram](diagram/DeleteOneExpense-SequenceDiagram.png)
 
 The above sequence diagram illustrates how the system handles the deletion of a one-off expense.
@@ -320,7 +321,7 @@ iterates through current one-time and recurring expense collections, then writes
 After successful persistence, control returns to CommandHandler, which continues month advancement and post-save updates.
 
 In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months. MonthlyArchive
-reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived entries (name, amount, category)
+reads each MonthN file and reconstructs rows as `List<ArchivedExpense>`. FinTrackPro then iterates through these archived entries (name, amount, category)
 to print month-grouped history and totals.
 
 ### Managing Profile
@@ -463,8 +464,9 @@ R | Netflix | 10.90 | ENTERTAINMENT
 
 This snapshot illustrates three key design points:
 
-1. **All seven Profile fields are restored** — name, allowance, savings, BTO goal, ratio, deadline,
-   and the optional `currentMonth` field are all populated from the `P` line.
+1. **Six mandatory Profile fields are restored** — name, allowance, savings, BTO goal, ratio, and
+   deadline are populated from the `P` line. The optional `currentMonth` field is also restored if
+   an 8th segment is present; otherwise it defaults to `1`.
 2. **Insertion order is preserved** — `e1` has `insertionOrder = 0` and `e2` has
    `insertionOrder = 1`, meaning a subsequent `sort recent` command will restore this exact sequence.
 3. **Recurring and one-off expenses are held separately** — `expenseList` and `recurringList` are
@@ -547,8 +549,8 @@ each line's parse logic in a `try-catch` block so one bad line cannot corrupt th
 
 **Why pipe (`|`) as a delimiter instead of a comma?**
 Expense names entered by users may naturally contain commas (e.g., `"rice, chicken"`), which would break
-a CSV-style parser. The pipe character is unlikely to appear in any of the stored fields, making it a
-safer choice without requiring any escape logic.
+a CSV-style parser. The pipe character is explicitly rejected in all user-entered name fields,
+guaranteeing it never appears as data and making it a safe delimiter without requiring any escape logic.
 
 **Future enhancement — JSON format (post-v2.1)**
 A planned future improvement is to migrate the storage format to JSON using a library such as Gson. This
@@ -586,7 +588,6 @@ An individual BTO budget planner for university students planning to apply for B
 | v1.0    | New User       | View salary and savings                 | Know how much I am saving relative to my salary                                    |
 | v1.0    | New User       | Have a help command                     | Easily use the app's commands                                                      |
 | v2.0    | Regular User   | Add recurring monthly expenses          | Never be blindsided by hidden or automated costs that occur every month            |
-| v2.0    | Regular User   | Add comments to expenses                | Provide context for specific spending habits to better understand them later       |
 | v1.0    | Regular User   | Set a specific target date              | Know the monthly savings rate needed to meet my deadline                           |
 | v2.0    | Regular User   | Sort expenses by category, name, or entry order | Organise my expense list to review and manage my spending habits                   |
 | v2.0    | Long Term User | Archive financial phases monthly        | Keep my dashboard uncluttered while preserving historical data                     |
@@ -650,7 +651,7 @@ prompted to establish a valid profile before testing profile-dependent commands.
    5. Test case: `delete abc` Expected: Error shown for invalid index format. List unchanged.
 3. **Adding a Recurring expense**
    1. Prerequisites: Application started with a valid profile setup.
-   2. Test case: `add netflix 30 ENTERTAINMENT recurring` Expected: Recurring expense added to recurring expense list
+   2. Test case: `add netflix 30 ENTERTAINMENT recurring` Expected: Recurring expense added to recurring expense list.
    3. Test case: `add phone bill 20 UTILITIES RECURRING` Expected: Recurring expense added successfully (case-insensitive keyword).
    4. Test case: `add netflix -1 ENTERTAINMENT recurring` Expected: Error shown for invalid amount. No recurring expense added.
    5. Test case: `add netflix 30 HELLO recurring` Expected: Error shown for invalid category. No recurring expense added.
@@ -791,4 +792,4 @@ prompted to establish a valid profile before testing profile-dependent commands.
    1. Test case: Adjust savings so they are exactly 50% of the BTO goal. Run `summary`.
    2. Expected: Readiness Level shows `ON TRACK`.
    3. Test case: Adjust savings to meet or exceed the BTO goal. Run `summary`.
-   4. Expected: Readiness Level shows `READY` 
+   4. Expected: Readiness Level shows `READY`.
