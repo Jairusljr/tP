@@ -355,24 +355,34 @@ Watch this space for more updates!!
 
 ## Command Summary
 
-| Action                    | Format, Examples                          |
-|---------------------------|-------------------------------------------|
-| Viewing Help              | `help`                                    |
-| Add more savings          | `savings`                                 |
-| Update monthly allowance  | `allowance`                               |
-| Update contribution ratio | `ratio`                                   |
-| Add Expense               | `add NAME AMOUNT CATEGORY [recurring]`    |
-| List Entries              | `list`                                    |
-| Sort Entries              | `sort KEYWORD` e.g. `sort category`       |
-| Delete Entry              | `delete INDEX` e.g. `delete 2`            |
-| Delete Recurring          | `deleterecurring INDEX`                   |
-| View Financial Summary    | `summary`                                 |
-| Archive Month             | `save`                                    |
-| Clear Current Month       | `clear`                                   |
-| Factory Reset             | `reset`                                   |
-| Exit Program              | `bye`                                     |
+### General Commands
+| Action                    | Format, Examples                                              |
+|---------------------------|---------------------------------------------------------------|
+| Viewing Help              | `help`                                                        |
+| View Financial Summary    | `summary`                                                     |
+| Exit Program              | `bye`                                                         |
+
+### Daily Transaction Commands
+| Action                    | Format, Examples                             |
+|---------------------------|----------------------------------------------|
+| Add Expense               | `add <name> <amount> <category> [recurring]` |
+| List Entries              | `list`                                       |
+| Delete Entry              | `delete <index>` e.g. `delete 2`             |
+| Delete Recurring          | `deleterecurring <index>`                    |
+
+### Other Commands
+| Action                    | Format, Examples                                                |
+|---------------------------|-----------------------------------------------------------------|
+| Sort Entries              | `sort <keyword>` e.g. `sort category` `sort recent` `sort name` |
+| Add more savings          | `savings`                                                       |
+| Update monthly allowance  | `allowance`                                                     |
+| Update contribution ratio | `ratio`                                                         |
+| Archive Month             | `save`                                                          |
+| Clear Current Month       | `clear`                                                         |
+| Factory Reset             | `reset`                                                         |
+
 
 ### Enquiry
 We hope that you found FinTrackPro useful and easy to use!
 
-Meanwhile, if you have any enquiries/bugs that you might have found please email us [here!](e1406324@u.nus.edu)
+Meanwhile, if you have any enquiries/bugs that you might have found please email us [here!](mailto:e1406324@u.nus.edu)
