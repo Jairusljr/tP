@@ -22,8 +22,26 @@ I created the initial OOP structure which consisted of the following classes:
 - InputUtil: handles all user input and parsing of commands
 whereby the InputUtil class, was placed in the ui package.
 
+This was the skeleton structure of the codebase, which was then enhanced and further partitioned by the rest of my teammates 
+with more classes, more OOP, and more functionality.
+
 Next, I added the `save` command into the CommandHandler to simulate adding expenditures month by month, and used MonthlyArchive 
 and ArchivedExpense to implement the functionality of saving the current month of expenditures.
+
+Additionally, I added the JUnit testing classes under `test/java/seedu.duke/data`: 
+- BtoCalculatorTest
+- SummaryReportTest
+- InputUtilTest
+- MonthlyArchiveTest
+- ArchiveExpenseTest
+
+I also added Assertions for the following classes:
+- CommandHandler
+- FintrackPro
+- Parser
+- Ui
+
+I added logging for the main class that was running our application, FinTrackPro.java as well.
 
 ---
 ### Contributions to the UG: <br>
