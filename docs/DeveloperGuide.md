@@ -37,10 +37,10 @@ strategies employed in the development of FinTrackPro.
    * **5.4 [Usability](#54-usability)**
    * **5.5 [Environment](#55-environment)**
 * **6. [Glossary](#6-glossary)**
-* **7. [Instructions For Manual Testing](#7-instructions-for-manual-testing)**
-   * **7.1 [Test Cases](#71-test-cases)**
+* **7. [Instructions for Manual Testing](#7-instructions-for-manual-testing)**
+   * **7.1 [Test cases](#71-test-cases)**
       * **7.1.1 [Managing Expenses](#managing-expenses-1)**
-      * **7.1.2 [Sorting Expenses](#sorting-expenses)**
+      * **7.1.2 [Sorting Expenses](#sorting-expenses-1)**
       * **7.1.3 [Managing Profile](#managing-profile-1)**
       * **7.1.4 [Reset and Clear](#reset-and-clear)**
       * **7.1.5 [Category Validation](#category-validation)**
@@ -62,7 +62,7 @@ strategies employed in the development of FinTrackPro.
 * **[SE-EDU Guides](https://se-education.org/guides/)**: We referred to the various guides provided by the SE-EDU team for best practices in software documentation and testing.
 * **[CS2113 Module Website](https://nus-cs2113-ay2526s2.github.io/website/)**: Special thanks to the professors and tutors of CS2113 for their guidance and feedback throughout the development lifecycle of v1.0 to v2.1.
 
-# 3 Design & Implementation
+# 3. Design & Implementation
 
 ## 3.1 Architecture Diagram
 
@@ -147,14 +147,15 @@ The sections below give more concrete details about each component.
 ## 3.2 UML Diagrams
 In this section, we will present the UML class diagrams, object diagrams and sequence diagrams to 
 illustrate how each main component of FinTrackPro integrates with the rest of the codebase.
+
 ### Managing Expenses
 ![Class Diagram](diagram/Expense-ClassDiagram.png)
 The above class diagram illustrates the overall design of the expense management system and the classes that directly participate 
 in handling user commands and managing expense data.
 
-FinTrackPro serves as the main controller of the application. It coordinates between the user interface(Ui), the command
+FinTrackPro serves as the main controller of the application. It coordinates between the user interface (Ui), the command
 processing component (CommandHandler), and the data storage structures (ExpenseList and RecurringExpenseList). It receives
-user input and delegates command execution accordingly
+user input and delegates command execution accordingly.
 
 CommandHandler is responsible for parsing and executing user commands such as adding, deleting, and sorting expenses. It 
 interacts with both ExpenseList and RecurringExpenseList to modify or retrieve data, and communicates results back to the user through the Ui.
@@ -191,7 +192,7 @@ This sequence diagram shows that the system uses the same command entry point fo
 to different data structures depending on whether the recurring flag is present.
 
 
-#### Delete one off expenses
+#### Delete one-off expenses
 ![Sequence Diagram](diagram/DeleteOneExpense-SequenceDiagram.png)
 
 The above sequence diagram illustrates how the system handles the deletion of a one-off expense.
@@ -243,8 +244,8 @@ priority when `sort category` is entered.
 CommandHandler delegates to ExpenseList by calling sortByCategory. ExpenseList invokes
 Java's sort with a comparator based on each Expense's category. During the sort, each
 Expense's getCategory is called to retrieve its Category, and Category's compareTo is
-then called to determine relative ordering based on each category's based on each category's 
-fixed sort priority as defined in the concrete subclass
+then called to determine relative ordering based on each category's fixed sort priority
+as defined in the concrete subclass.
 
 The sort is stable, meaning expenses within the same category retain their relative
 insertion order. No data is mutated beyond the reordering of the internal list.
@@ -294,7 +295,7 @@ Each concrete subclass (`FoodCategory`, `TransportCategory`, `EntertainmentCateg
 label and its position in the sorted expense list. `Category` implements `Comparable<Category>` so that standard
 Java sorting utilities can order expenses by category without any sorting logic in `ExpenseList` itself.
 
-### Archive Expenses 
+### Archive Expenses
 #### Class Diagram
 ![Class Diagram](diagram/ArchiveExpense-ClassDiagram.jpg)
 The above class diagram illustrates the design of the month archiving feature and the classes that directly participate
@@ -320,7 +321,7 @@ iterates through current one-time and recurring expense collections, then writes
 After successful persistence, control returns to CommandHandler, which continues month advancement and post-save updates.
 
 In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months. MonthlyArchive
-reads each MonthN file and reconstructs rows as List<ArchivedExpense>. FinTrackPro then iterates through these archived entries (name, amount, category)
+reads each MonthN file and reconstructs rows as `List<ArchivedExpense>`. FinTrackPro then iterates through these archived entries (name, amount, category)
 to print month-grouped history and totals.
 
 ### Managing Profile
@@ -405,16 +406,16 @@ The report assigns a "Readiness Level" to provide the user with immediate psycho
 | Progress Range | Readiness Level | Description                                        |
 |----------------|-----------------|----------------------------------------------------|
 | 100%           | READY           | Goal met; funds available for downpayment.         |
-| 70% – 99%      | SECURE          | High probability of meeting the goal early.        |
-| 50% – 70%      | ON TRACK        | Midway point reached; consistent saving required.  |
-| 10% – 50%      | MAKING PROGRESS | Foundations laid; spending habits may need review. |
+| ≥ 70% – < 100% | SECURE          | High probability of meeting the goal early.        |
+| ≥ 50% – < 70%  | ON TRACK        | Midway point reached; consistent saving required.  |
+| ≥ 10% – < 50%  | MAKING PROGRESS | Foundations laid; spending habits may need review. |
 | < 10%          | BARELY STARTED  | Initial phase; significant saving effort required. |
 
 #### Interaction Flow
 When the summary command is triggered, the interaction follows this sequence:
 
 1. `CommandHandler.handleSummary()` is invoked.
-2. A new `SummaryReport` object is instantiated, pulling the latest data from `Profile` and the `ExpenseLists`.
+2. A new `SummaryReport` object is instantiated, pulling the latest data from `Profile`, `ExpenseList`, and `RecurringExpenseList`.
 3. The constructor calculates the surpluses, percentages, and estimations.
 4. The populated `SummaryReport` is passed to `Ui.showSummaryReport()`, which prints the dashboard to the console.
 
@@ -438,6 +439,7 @@ on the data classes.
 #### Data Persistence Format
 The data is stored in a plain-text file using a pipe-delimited format. Each line is prefixed with a "Record Type" 
 identifier that determines how the line is parsed:
+
 | Prefix | Record Type      | Format                                                              |
 |--------|------------------|---------------------------------------------------------------------|
 | `P`    | Profile          | `P \| Name \| Allowance \| Savings \| BtoGoal \| Ratio \| Deadline \| CurrentMonth \| HousePrice` |
@@ -454,7 +456,7 @@ with a `WARNING`-level log entry. This ensures that a single corrupted line does
 The object diagram below shows a concrete snapshot of the application's in-memory state after
 `Storage#load()` has successfully parsed the following `fintrack.txt` file:
 ```
-P | Alice | 2000.00 | 5000.00 | 25000.00 | 0.50 | 2028-10-24 | 3 | null
+P | Alice | 2000.00 | 5000.00 | 25000.00 | 0.50 | 2028-10-24 | 3 | 500000.00
 E | Lunch | 5.50 | FOOD | 0
 E | Bus fare | 1.80 | TRANSPORT | 1
 R | Netflix | 10.90 | ENTERTAINMENT
@@ -464,9 +466,10 @@ R | Netflix | 10.90 | ENTERTAINMENT
 
 This snapshot illustrates three key design points:
 
-1. **All eight Profile fields are restored** — name, allowance, savings, BTO goal, ratio, deadline,
-   `currentMonth`, and the optional `housePrice` field are all populated from the `P` line.
-   `housePrice` is written as `null` when not set and skipped during load.
+1. **All Profile fields are restored** — all eight fields (name, allowance, savings, BTO goal, ratio,
+   deadline, `currentMonth`, `housePrice`) are written by the current save format and fully restored
+   on load. The checks for missing 8th and 9th segments exist only for backward compatibility with
+   save files produced by older versions of the application.
 2. **Insertion order is preserved** — `e1` has `insertionOrder = 0` and `e2` has
    `insertionOrder = 1`, meaning a subsequent `sort recent` command will restore this exact sequence.
 3. **Recurring and one-off expenses are held separately** — `expenseList` and `recurringList` are
@@ -531,8 +534,9 @@ The following sequence of actions occurs during the load process:
 3. For each line starting with `P`, **Storage** delegates to `loadProfile`, which invokes all six
    setters on **Profile**: `setName`, `setMonthlyAllowance`, `setCurrentSavings`, `setBtoGoal`,
    `setContributionRatio`, and `setDeadline`.
-4. If the line contains an 8th segment (`parts.length >= 8`), `profile.setCurrentMonth()` is also
-   called. Otherwise, the month counter remains at its default value of `1`.
+4. The 8th segment (`currentMonth`) and 9th segment (`housePrice`) are also loaded if present.
+   Both are always written by the current save format; the segment-presence checks exist only for
+   backward compatibility with save files from older versions of the application.
 5. For lines starting with `E`, **Storage** delegates to `loadExpense`, which calls `expenseList.add()`
    with the preserved insertion order, restoring the original sort sequence.
 6. For lines starting with `R`, **Storage** delegates to `loadRecurring`, which adds a new
@@ -549,9 +553,8 @@ each line's parse logic in a `try-catch` block so one bad line cannot corrupt th
 
 **Why pipe (`|`) as a delimiter instead of a comma?**
 Expense names entered by users may naturally contain commas (e.g., `"rice, chicken"`), which would break
-a CSV-style parser. The pipe character is explicitly rejected in user-facing name fields (expense names
-and the user's own name) at the input layer, guaranteeing it never appears as data and making it a safe
-delimiter without requiring any escape logic.
+a CSV-style parser. The pipe character is explicitly rejected in all user-entered name fields,
+guaranteeing it never appears as data and making it a safe delimiter without requiring any escape logic.
 
 **Future enhancement — JSON format (post-v2.1)**
 A planned future improvement is to migrate the storage format to JSON using a library such as Gson. This
@@ -563,7 +566,7 @@ via a clean interface, so this migration would require changes only within `Stor
 
 ---
 
-# 4 Product Scope
+# 4. Product Scope
 
 ## 4.1 Target user profile
 FinTrack Pro was created for individual students in a relationship who are planning to set aside finances for their share of a BTO downpayment.
@@ -589,17 +592,16 @@ An individual BTO budget planner for university students planning to apply for B
 | v1.0    | New User       | View salary and savings                 | Know how much I am saving relative to my salary                                    |
 | v1.0    | New User       | Have a help command                     | Easily use the app's commands                                                      |
 | v2.0    | Regular User   | Add recurring monthly expenses          | Never be blindsided by hidden or automated costs that occur every month            |
-| v2.0    | Regular User   | Add comments to expenses                | Provide context for specific spending habits to better understand them later       |
 | v1.0    | Regular User   | Set a specific target date              | Know the monthly savings rate needed to meet my deadline                           |
-| v1.0    | Regular User   | Sort expenditure from highest to lowest | Know which expenditures are hindering me from reaching my downpayment goal         |
+| v2.0    | Regular User   | Sort expenses by category, name, or entry order | Organise my expense list to review and manage my spending habits                   |
 | v2.0    | Long Term User | Archive financial phases monthly        | Keep my dashboard uncluttered while preserving historical data                     |
 | v2.0    | Long Term User | Assign a financial readiness level      | Know how ready I am to pay off my share of the downpayment                         |
 | v1.0    | Long Term User | Have a local database                   | View all past inputs and historical data                                           |
 
 
-# 5 Non-Functional Requirements
+# 5. Non-Functional Requirements
 
-##  5.1 Performance and scalability
+## 5.1 Performance and scalability
 * Response Time: Any command should return a result within 200 milliseconds under normal operating conditions.
 * Capacity: The system should be able to handle up to 1,000 unique expenditure entries and 5 years of archived monthly data without any perceptible degradation in performance or lag in CLI responsiveness.
 
@@ -618,15 +620,15 @@ An individual BTO budget planner for university students planning to apply for B
 * Platform Independence: The application must be cross-platform, functioning identically on Windows, macOS, and Linux distributions, provided the system has Java 17 installed.
 * Zero Installation: The product should be delivered as a single, executable JAR file that requires no complex installation process or external database setup. 
 
-# 6 Glossary
+# 6. Glossary
 
 * *BTO (Build-To-Order)* - a subsidized public housing option scheme in Singapore where new flats are constructed only after a sufficient number of units (typically 65-70%) have been pre-booked by applicants
 * *Contribution ratio* - the user's fractional share of the downpayment (0.0 to 1.0)
-* *Recurring expenses* - expenses that occur on a monthly basis following the same rates (eg Netflix subscription of $5.98/month), then you can run `add Netflix Subscription 5.98 entertainment recurring`
+* *Recurring expenses* - expenses that occur every month at a fixed rate (e.g. a Netflix subscription of $5.98/month)
 * *Adjusted Minimum Savings* - minimum amount you need to save per month given your distance to goal and number of months remaining till the deadline 
 * *Estimated Goal Achievement* - number of months you need to take to achieve your goal, given the current month's savings and distance to goal
 
-# 7 Instructions for Manual Testing
+# 7. Instructions for Manual Testing
 Before running any test case, ensure you are starting from a clean state by deleting
 `fintrack.txt` and any files in the `monthly_archives/` folder if they exist. Launch
 the application with `java -jar FinTrackPro.jar` and complete the initial setup when
@@ -651,13 +653,13 @@ prompted to establish a valid profile before testing profile-dependent commands.
    3. Test case: `delete 0` Expected: Error shown for invalid index. List unchanged.
    4. Test case: `delete 99` Expected: Error shown for out-of-range index. List unchanged.
    5. Test case: `delete abc` Expected: Error shown for invalid index format. List unchanged.
-3. **Adding a Recurring expense**
+3. **Adding a recurring expense**
    1. Prerequisites: Application started with a valid profile setup.
-   2. Test case: `add netflix 30 ENTERTAINMENT recurring` Expected: Recurring expense added to recurring expense list
+   2. Test case: `add netflix 30 ENTERTAINMENT recurring` Expected: Recurring expense added to recurring expense list.
    3. Test case: `add phone bill 20 UTILITIES RECURRING` Expected: Recurring expense added successfully (case-insensitive keyword).
    4. Test case: `add netflix -1 ENTERTAINMENT recurring` Expected: Error shown for invalid amount. No recurring expense added.
    5. Test case: `add netflix 30 HELLO recurring` Expected: Error shown for invalid category. No recurring expense added.
-4. **Deleting a recurring Expense**
+4. **Deleting a recurring expense**
    1. Prerequisites: At least one recurring expense exists.
    2. Test case: `deleterecurring 1` Expected: First recurring expense removed.
    3. Test case: `deleterecurring 0` Expected: Error shown for invalid index. List unchanged.
@@ -735,7 +737,7 @@ prompted to establish a valid profile before testing profile-dependent commands.
     4. Test case: `add lunch 5 FOO` Expected: Error message shown for invalid category. No expense added.
 
 2. **Category sort ordering**
-    1. Test case: Add one expense of each category in reverse order (`OTHER`, `UTILITIES`, `ENTERTAINMENT`, `TRANSPORT`, `FOOD`), then run `sort category`. Expected: Expenses reordered as `FOOD`, `TRANSPORT`, `ENTERTAINMENT`, `UTILITIES`, `OTHER`
+    1. Test case: Add one expense of each category in reverse order (`OTHER`, `UTILITIES`, `ENTERTAINMENT`, `TRANSPORT`, `FOOD`), then run `sort category`. Expected: Expenses reordered as `FOOD`, `TRANSPORT`, `ENTERTAINMENT`, `UTILITIES`, `OTHER`.
 
 ---
 
@@ -794,4 +796,4 @@ prompted to establish a valid profile before testing profile-dependent commands.
    1. Test case: Adjust savings so they are exactly 50% of the BTO goal. Run `summary`.
    2. Expected: Readiness Level shows `ON TRACK`.
    3. Test case: Adjust savings to meet or exceed the BTO goal. Run `summary`.
-   4. Expected: Readiness Level shows `READY` 
+   4. Expected: Readiness Level shows `READY`.
