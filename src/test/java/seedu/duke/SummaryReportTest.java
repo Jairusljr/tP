@@ -220,4 +220,83 @@ public class SummaryReportTest {
         assertEquals(new BigDecimal("530"), report.totalExpenditure);
         assertEquals(new BigDecimal("3470"), report.monthlySurplus);
     }
+
+    @Test
+    void readinessLevel_boundaryCheck_lowerAndUpperLimits() {
+        Profile profile = new Profile();
+        profile.setBtoGoal(new BigDecimal("100"));
+        profile.setMonthlyAllowance(new BigDecimal("1000"));
+        profile.setDeadline(LocalDate.now().plusYears(1));
+        ExpenseList expenses = new ExpenseList();
+        RecurringExpenseList recurring = new RecurringExpenseList();
+
+        // 49% - Should be "Making Progress"
+        profile.setCurrentSavings(new BigDecimal("49"));
+        assertEquals("Making Progress - Jiayou! You're making good progress",
+                new SummaryReport(profile, expenses, recurring).readinessLevel);
+
+        // 50% - Should jump to "On Track"
+        profile.setCurrentSavings(new BigDecimal("50"));
+        assertEquals("On Track - Let's go! You're more than halfway there",
+                new SummaryReport(profile, expenses, recurring).readinessLevel);
+    }
+
+    @Test
+    public void summaryReport_deadlineIsTomorrow_calculatesOneMonthRemaining() {
+        Profile profile = new Profile();
+        profile.setBtoGoal(new BigDecimal("1000"));
+        profile.setCurrentSavings(BigDecimal.ZERO);
+        profile.setMonthlyAllowance(new BigDecimal("2000"));
+
+        profile.setDeadline(LocalDate.now().plusDays(1));
+
+        SummaryReport report = new SummaryReport(profile, new ExpenseList(), new RecurringExpenseList());
+
+        // monthsLeft: 0 months + 1 day will round up to 1 month
+        // monthlyRequired = (1000 - 0) / 1 = 1000.00
+        assertEquals(new BigDecimal("1000.00"), report.monthlyRequired);
+    }
+
+    @Test
+    void profile_setDeadlinePastOrToday_isAccepted() {
+        Profile profile = new Profile();
+
+        // Past and today dates are accepted by the setter; validation is enforced at input via InputUtil
+        LocalDate today = LocalDate.now();
+        profile.setDeadline(today);
+        assertEquals(today, profile.getDeadline());
+
+        LocalDate past = LocalDate.now().minusDays(1);
+        profile.setDeadline(past);
+        assertEquals(past, profile.getDeadline());
+    }
+
+    @Test
+    void summaryReport_pastDeadline_doesNotCrash() {
+        Profile profile = new Profile();
+        profile.setBtoGoal(new BigDecimal("10000"));
+        profile.setCurrentSavings(new BigDecimal("2000"));
+        profile.setMonthlyAllowance(new BigDecimal("4000"));
+        profile.setDeadline(LocalDate.now().minusMonths(3));
+
+        // Should not throw AssertionError — monthsLeft clamped to 1 in SummaryReport
+        SummaryReport report = new SummaryReport(profile, new ExpenseList(), new RecurringExpenseList());
+
+        assertEquals(new BigDecimal("8000.00"), report.monthlyRequired);
+    }
+
+    @Test
+    void summaryReport_zeroExpenditure_surplusEqualsAllowance() {
+        Profile profile = new Profile();
+        profile.setMonthlyAllowance(new BigDecimal("2500"));
+        profile.setBtoGoal(new BigDecimal("5000"));
+        profile.setCurrentSavings(BigDecimal.ZERO);
+        profile.setDeadline(LocalDate.now().plusYears(1));
+
+        // Both lists are empty
+        SummaryReport report = new SummaryReport(profile, new ExpenseList(), new RecurringExpenseList());
+
+        assertEquals(new BigDecimal("2500"), report.monthlySurplus);
+        assertEquals(new BigDecimal("0"), report.totalExpenditure);
+    }
 }

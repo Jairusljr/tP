@@ -1,3 +1,4 @@
+//@@ wkynaston
 package seedu.duke.data;
 
 import java.math.BigDecimal;
@@ -62,6 +63,9 @@ public class ExpenseList {
      */
     // Used by Storage only — preserves original insertion order from file
     public void add(String name, BigDecimal amount, Category category, int insertionOrder) {
+        assert name != null && !name.isBlank() : "Expense name should not be null or blank.";
+        assert amount != null : "Expense amount should not be null.";
+        assert category != null : "Expense category should not be null.";
         assert insertionOrder >= 0 : "Insertion order should be non-negative";
         Expense expense = new Expense(name, amount, category, insertionOrder);
         expenses.add(expense);
@@ -160,6 +164,7 @@ public class ExpenseList {
         assert total.compareTo(BigDecimal.ZERO) == 0 : "Total should be zero after clear.";
     }
 
+    //@@ yengfuan
     /**
      * Sorts the expense list in place by category sort order.
      *

@@ -104,7 +104,7 @@ public class CommandHandler {
                         + " | category: " + args.category);
 
                 ui.printLine("Added recurring expense: " + recurringExpenseList.get(recurringExpenseList.size() - 1));
-                ui.printLine("Recurring Total: $" + recurringExpenseList.getTotal());
+                ui.printLine("Recurring Total: " + InputUtil.formatMoney(recurringExpenseList.getTotal()));
                 ui.printLine("");
                 return;
             }
@@ -120,7 +120,8 @@ public class CommandHandler {
                     + " | new total: $" + expenseList.getTotal());
 
             ui.printLine("Added expense: " + expenseList.get(expenseList.size() - 1));
-            ui.printLine("Month " + profile.getCurrentMonth() + " Total: $" + expenseList.getTotal());
+            ui.printLine("Month " + profile.getCurrentMonth() + " Total: "
+                    + InputUtil.formatMoney(expenseList.getTotal()));
             ui.printLine("");
 
         } catch (InvalidAmountException | InvalidCategoryException e) {
@@ -194,10 +195,23 @@ public class CommandHandler {
             throw new InvalidAmountException("Expense name cannot be empty.\n");
         }
 
+        if (name.contains("|")) {
+            logger.warning("handleAdd rejected | reason: expense name contains reserved character '|'");
+            throw new InvalidAmountException("Expense name cannot contain the '|' character.\n");
+        }
+
         if (!Category.isValid(categoryString)) {
             logger.warning("handleAdd rejected | reason: invalid category " + categoryString);
             throw new InvalidCategoryException("Invalid category! Valid categories: " +
                     "FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER\n");
+        }
+
+        if (amountString.matches("-\\d+(\\.\\d+)?")) {
+            throw new InvalidAmountException("You cannot add a negative expenditure! Try again!\n");
+        }
+
+        if (!amountString.matches("\\d+(\\.\\d+)?")) {
+            throw new InvalidAmountException("Amount must be a plain number.\n");
         }
 
         BigDecimal amount = parseAmount(amountString);
@@ -237,7 +251,7 @@ public class CommandHandler {
                             + " | removed: $" + removed.getAmount()
                             + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Deleted expense #" + index + ": $" + removed.getAmount());
+            ui.printLine("Deleted expense #" + index + ": $" + removed);
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
         } catch (InvalidIndexException e) {
@@ -302,6 +316,7 @@ public class CommandHandler {
         }
     }
 
+    //@@ jairusljr
     /**
      * Clears all expenses from the {@link ExpenseList} after user confirmation.
      *
@@ -316,7 +331,7 @@ public class CommandHandler {
         assert in != null : "Scanner should not be null";
 
         ui.printLine("WARNING: This will permanently delete ALL one-off expenses. Are you sure? (Input Y to clear)");
-        String response = in.nextLine().trim().toLowerCase();
+        String response = ui.readLine(in, "").trim().toLowerCase();
 
         if (response.equals("y")) {
             expenseList.clear();
@@ -334,6 +349,7 @@ public class CommandHandler {
         }
     }
 
+    //@@ ak2003x
     /**
      * Adds a specified amount to the user's current total savings.
      *
@@ -438,6 +454,7 @@ public class CommandHandler {
         ui.showSummaryReport(new SummaryReport(profile, expenseList, recurringExpenseList));
     }
 
+    //@@ jairusljr
     /**
      * Completely resets the user profile and expense list after confirmation.
      * @param in Scanner used for user confirmation.
@@ -446,40 +463,35 @@ public class CommandHandler {
         assert in != null : "Scanner should not be null";
 
         ui.printLine("WARNING: This will wipe your profile and ALL expenses. Type 'Y' to continue: ");
-        String response = in.nextLine().trim().toLowerCase();
+        String response = ui.readLine(in, "").trim().toLowerCase();
 
         if (response.equals("y")) {
-            // 1. Reset in-memory objects
+            // Reset in-memory objects
             profile.reset();
             expenseList.clear();
+            recurringExpenseList.clear();
 
             assert expenseList.getTotal().compareTo(BigDecimal.ZERO) == 0
                     : "Expense total should be zero after reset";
 
-            // 2. Overwrite the save file with the empty data
+            // Overwrite the save file with the empty data
             try {
                 storage.save(profile, expenseList, recurringExpenseList);
-
-                // Log at INFO: full system reset is the most significant application event
-                logger.info("handleReset executed | profile and expenses cleared, save file overwritten");
-
+                logger.info("handleReset executed | All data cleared and save file overwritten");
                 ui.printLine("System reset successful. Please restart or type 'bye' to exit.");
                 ui.printLine("");
             } catch (IOException e) {
-                // Log at WARNING: in-memory reset succeeded but disk write failed
-                logger.warning("handleReset | in-memory reset succeeded but save file write failed: "
-                        + e.getMessage());
+                logger.warning("handleReset | Disk write failed: " + e.getMessage());
                 ui.printLine("Error: Could not reset the save file on disk.");
-                ui.printLine("");
             }
         } else {
-            // Log at INFO: user chose not to reset — still worth recording the decision
             logger.info("handleReset cancelled | user did not confirm");
             ui.printLine("Reset aborted. Your data is safe!");
             ui.printLine("");
         }
     }
 
+    //@@ author
     /**
      * Parses and validates an amount string.
      *
@@ -612,19 +624,21 @@ public class CommandHandler {
     public void handleSaveMonth() {
 
         int currentMonth = profile.getCurrentMonth();
-        BigDecimal monthlyExpenses = expenseList.getTotal();
+        BigDecimal monthlyExpenses = expenseList.getTotal().add(recurringExpenseList.getTotal());
         BigDecimal monthlyAllowance = profile.getMonthlyAllowance();
         BigDecimal unspentAmount = monthlyAllowance.subtract(monthlyExpenses);
 
         logger.info("handleSaveMonth start | month=" + currentMonth
                 + " | monthlyAllowance=" + monthlyAllowance
+                + " | oneOffExpenses=" + expenseList.getTotal()
+                + " | recurringExpenses=" + recurringExpenseList.getTotal()
                 + " | monthlyExpenses=" + monthlyExpenses
                 + " | unspentAmount=" + unspentAmount);
 
         // Archive current month's expenses
         try {
             MonthlyArchive archive = new MonthlyArchive(".");
-            archive.saveMonthlyExpenses(currentMonth, expenseList);
+            archive.saveMonthlyExpenses(currentMonth, expenseList, recurringExpenseList);
             logger.info("Month " + currentMonth + " expenses archived successfully");
             ui.printLine("Month " + currentMonth + " expenses archived to 'monthly_archives'");
         } catch (IOException e) {

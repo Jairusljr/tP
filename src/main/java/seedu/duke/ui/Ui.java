@@ -78,8 +78,9 @@ public class Ui {
         }
 
         if (!in.hasNextLine()) {
-            logger.warning("No more input available. Returning bye.");
-            return "bye";
+            logger.warning("Input stream closed (EOF). Exiting gracefully.");
+            printLine("\nInput stream closed. Exiting FinTrackPro...");
+            System.exit(0);
         }
 
         String input = in.nextLine();
@@ -105,18 +106,21 @@ public class Ui {
 
         printLine("Daily Transaction Commands");
         printLine("'add'      <name> <amount> <category> <recurring> - " +
-                "add a new expense" +   "(e.g., add lunch 5.50 FOOD for not recurring and" +
-                " add lunch 5.50 FOOD recurring for recurring)");
+                "add a new expense" +   "\n(e.g., add lunch 5.50 FOOD for not recurring and" +
+                " add lunch 5.50 FOOD recurring for recurring)" +
+                "\n(Valid categories to add: FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER)");
         printLine("'list'     - view all current expenses and your total spent");
         printLine("'delete'   <index> - remove a specific expense from your list");
         printLine("'deleterecurring' <index> - remove a recurring monthly expense");
         printLine("");
 
         printLine("Profile & Goal Management");
-        printLine("'sort'   <keyword> - sort the expenditure list by name, category or recency " +
+        printLine("'sort'   <keyword> - sort the expenditure list by category, alphabetical order or recency " +
                 "(e.g sort name, sort recent, sort category)");
-        printLine("'savings' - add a surplus amount to your existing savings");
-        printLine("'save'   - archive current month's expenses and advance to next month");
+        printLine("'savings'   - add a surplus amount to your existing savings");
+        printLine("'allowance' - update your monthly allowance");
+        printLine("'ratio'     - update your BTO contribution ratio (0.0 to 1.0, max 2 dp)");
+        printLine("'save'      - archive current month's expenses and advance to next month");
         printLine("'clear'   - wipe all current expenses from the list");
         printLine("'reset'   - wipes all profile data and expenses to start fresh.");
         printLine("");
@@ -146,6 +150,7 @@ public class Ui {
         printLine("Current Contribution Ratio: " + percentage.toPlainString() + "% (" + currentRatio + ")");
     }
 
+    //@@author Jairusljr
     /**
      * Prints a formatted BTO Readiness Report to the console.
      *
@@ -169,6 +174,9 @@ public class Ui {
         int monthsLeft = period.getYears() * 12 + period.getMonths();
         if (period.getDays() > 0) {
             monthsLeft++;
+        }
+        if (monthsLeft < 0) {
+            monthsLeft = 0;
         }
 
         assert monthsLeft >= 0 : "Months left should not be negative";

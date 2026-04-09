@@ -1,3 +1,4 @@
+//@@author AK2003x
 package seedu.duke.data;
 
 import java.math.BigDecimal;
@@ -40,6 +41,8 @@ public class Profile {
         assert housePrice != null && housePrice.compareTo(BigDecimal.ZERO) >= 0
                 : "House price cannot be null or negative";
         this.housePrice = housePrice;
+        BtoCalculator calc = new BtoCalculator(this.housePrice, this.contributionRatio);
+        this.btoGoal = calc.yourShare;
     }
 
     /**
@@ -70,7 +73,6 @@ public class Profile {
      */
     public void setDeadline(LocalDate deadline) {
         assert deadline != null : "Deadline cannot be null";
-        assert deadline.isAfter(LocalDate.now()) : "Deadline must be in the future";
         this.deadline = deadline;
     }
 
@@ -135,6 +137,7 @@ public class Profile {
      */
     public void setCurrentSavings(BigDecimal currentSavings) {
         assert currentSavings != null : "Current savings cannot be null";
+        assert currentSavings.compareTo(BigDecimal.ZERO) >= 0 : "Current savings cannot be negative";
         this.currentSavings = currentSavings;
     }
 
@@ -179,7 +182,19 @@ public class Profile {
      * @return The current month as an integer (starting from 1).
      */
     public int getCurrentMonth() {
+
         return currentMonth;
+    }
+
+    /**
+     * Sets the current month number.
+     * This is primarily used by the Storage class to restore the user's progress.
+     *
+     * @param currentMonth The month number to set.
+     */
+    public void setCurrentMonth(int currentMonth) {
+        assert currentMonth >= 1 : "Month must be at least 1";
+        this.currentMonth = currentMonth;
     }
 
     /**
@@ -197,5 +212,7 @@ public class Profile {
         this.currentSavings = BigDecimal.ZERO;
         this.contributionRatio = new BigDecimal("0.5");
         this.currentMonth = 1;
+        this.housePrice = null;
+        this.deadline = LocalDate.now();
     }
 }

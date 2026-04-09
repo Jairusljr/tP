@@ -1,3 +1,4 @@
+//@@author wKynaston
 package seedu.duke.data;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class RecurringExpenseList {
      * @return removed recurring expense
      */
     public RecurringExpense delete(int indexInList) {
+        assert isValidIndex(indexInList) : "Index " + indexInList + " is out of bounds";
         int indexToDelete = indexInList - 1;
         return recurringExpenses.remove(indexToDelete);
     }
@@ -81,6 +83,7 @@ public class RecurringExpenseList {
      */
     public void clear() {
         recurringExpenses.clear();
+        assert recurringExpenses.isEmpty() : "Recurring expense list should be empty after clear";
     }
     /**
      * Returns all recurring expenses whose name or category contains the given keyword.
