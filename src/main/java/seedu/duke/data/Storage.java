@@ -182,11 +182,19 @@ public class Storage {
 
     private void loadExpense(ExpenseList expenseList, String[] parts) {
         int len = parts.length;
-        if (len == 2) { // Old format
+        if (len == 2) {
             expenseList.add("Unnamed Expense", new BigDecimal(parts[1]), Category.fromString("OTHER"));
-        } else if (len == 4) { // New format
+        } else if (len == 4) {
+            if (!Category.isValid(parts[3])) {
+                logger.log(Level.WARNING, "Skipping expense with invalid category: " + parts[3]);
+                return;
+            }
             expenseList.add(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3]));
-        } else if (len == 5) { // Format with insertion order
+        } else if (len == 5) {
+            if (!Category.isValid(parts[3])) {
+                logger.log(Level.WARNING, "Skipping expense with invalid category: " + parts[3]);
+                return;
+            }
             expenseList.add(parts[1], new BigDecimal(parts[2]), Category.fromString(parts[3]),
                     Integer.parseInt(parts[4]));
         }
