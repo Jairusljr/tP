@@ -152,7 +152,7 @@ public class CommandHandler {
 
         if (rest.isEmpty()) {
             logger.warning("handleAdd rejected | reason: empty input");
-            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
         }
 
         String[] parts = rest.split("\\s+");
@@ -172,12 +172,12 @@ public class CommandHandler {
 
         if (recurringCount > 1) {
             logger.warning("handleAdd rejected | reason: multiple recurring flags");
-            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
         }
 
         if ((!recurring && filteredParts.size() < 3) || (recurring && filteredParts.size() < 3)) {
             logger.warning("handleAdd rejected | reason: insufficient arguments");
-            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
         }
 
         // Detect trailing junk such as:
@@ -207,7 +207,7 @@ public class CommandHandler {
 
                 if (hasNumericEarlier && hasValidCategoryEarlier) {
                     logger.warning("handleAdd rejected | reason: too many trailing arguments");
-                    throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+                    throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
                 }
             }
         }
@@ -308,8 +308,8 @@ public class CommandHandler {
             throw new InvalidIndexException(
                     """
                             Wrong Format Bro!!!
-                            For one-off expenses: delete <index>
-                            For recurring expenses: deleterecurring <index>
+                            For one-off expenses: delete <INDEX>
+                            For recurring expenses: deleterecurring <INDEX>
                             """);
         }
         return rest;
