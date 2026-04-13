@@ -14,14 +14,15 @@ Let's get started!
 2. Download the latest ```.jar``` file of FinTrackPro from [here](https://github.com/AY2526S2-CS2113-T14-2/tP/releases).
 3. Copy the file to the folder that you want to use as the home folder for FinTrackPro.
 4. Open Terminal(Mac) or Windows Powershell(Windows), ```cd``` into the folder you put the jar file in, and use the ```java -jar FinTrackPro.jar``` command to run the application. 
-5. You should see an introduction page asking for your name.
-6. Type the command in the command line and press Enter to execute it.
+5. You should see an introduction page asking for a few things: Your name, savings, allowance, cost of BTO flat, contribution ratio, and deadline. This is part of the initial setup.
+6. After which, you can type the command in the command line and press Enter to execute it.
 7. You can refer to the [Features](#features) page for details of each command. Have fun!!
+<b>NOTE</b>: Once you start Step 5, you cannot type 'bye' to exit the program. 'bye' command should only be used after the initial setup.
 
 ## Notes about the command format
 - Words in `UPPER_CASE` are parameters to be supplied by the user. e.g. in `add NAME AMOUNT CATEGORY`, `NAME`, `AMOUNT` and `CATEGORY` are parameters.
 - Items in square brackets `[ ]` are optional. e.g. `[RECURRING]` can be omitted.
-- 
+
 ## Features
 
 * <b>View all commands:</b> [help](#viewing-help-help)
@@ -59,7 +60,7 @@ General Commands
 'bye'     - exit the program
 
 Daily Transaction Commands
-'add'      <name> <amount> <category> <recurring> - add a new expense
+'add'      NAME AMOUNT CATEGORY [RECURRING] - add a new expense
 (e.g., add lunch 5.50 FOOD for not recurring and add lunch 5.50 FOOD recurring for recurring)
 ..
 ..
