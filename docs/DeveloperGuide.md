@@ -332,7 +332,7 @@ Java sorting utilities can order expenses by category without any sorting logic 
 
 #### Class Diagram
 
-![Class Diagram](diagram/ArchiveExpense-ClassDiagram.jpg)
+![Class Diagram](diagram/ArchiveExpense-ClassDiagram.png)
 The above class diagram illustrates the design of the month archiving feature and the classes that directly participate
 in it.
 
