@@ -304,6 +304,7 @@ Monthly Allowance: $4,000.00
 ```
 <b>NOTE:</b>  
 - Any unspent allowance (monthly allowance minus total expenses) is automatically transferred to your savings balance.
+- Typically a BTO downpayment is due within 9 months of securing the flat. Hence, it should not be used beyond Month 9, though it can be used for as many months as the user wants to simulate.
 - If your total expenses exceed your monthly allowance, no transfer occurs and an overspend message is shown.
 
 ### Data Storage
