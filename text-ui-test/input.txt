@@ -37,4 +37,18 @@ reset now
 reset
 n
 bye now
-bye
+  help
+  summary
+  list
+  savings
+10
+  allowance
+10
+  ratio
+0.50
+  save
+  clear
+n
+  reset
+n
+   bye
