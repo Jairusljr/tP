@@ -138,8 +138,8 @@ public class FinTrackPro {
                 "profileName=" + name
                         + ", oneOffCount=" + expenseList.size()
                         + ", recurringCount=" + recurringExpenseList.size());
-        String userInput = ui.readLine(in, "");
-        while (!userInput.equalsIgnoreCase("bye")) {
+        String userInput = ui.readLine(in, "").trim();
+        while (!isExactCommandInput(userInput, "bye")) {
             handleCommand(userInput, in);
 
             try {
@@ -150,7 +150,7 @@ public class FinTrackPro {
                 ui.printLine("Warning: Data could not be saved to disk.");
             }
 
-            userInput = ui.readLine(in, "");
+            userInput = ui.readLine(in, "").trim();
         }
         logState("run.command-loop.exit", "persist in-memory data", "exitCommand=bye");
 
@@ -339,14 +339,16 @@ public class FinTrackPro {
         assert userInput != null : "userInput should not be null";
         assert in != null : "Scanner should not be null";
 
+        String normalizedInput = userInput.trim();
+
         logState("command.received", "parse command token", "rawInput='" + userInput + "'");
 
-        if (userInput.trim().isEmpty()) {
+        if (normalizedInput.isEmpty()) {
             logger.warning("state=command.invalid.empty | expected=prompt for non-empty command | rawInput=''");
             ui.printLine("Cannot process empty description!");
             return;
         }
-        String command = Parser.parseCommand(userInput);
+        String command = Parser.parseCommand(normalizedInput);
         logState("command.parsed", "dispatch to command handler",
                 "command=" + command + ", rawInput='" + userInput + "'");
 
@@ -361,15 +363,15 @@ public class FinTrackPro {
         switch (command) {
         case "add":
             logState("command.dispatch", "handler.handleAdd", "command=add");
-            handler.handleAdd(userInput);
+            handler.handleAdd(normalizedInput);
             break;
         case "delete":
             logState("command.dispatch", "handler.handleDelete", "command=delete");
-            handler.handleDelete(userInput);
+            handler.handleDelete(normalizedInput);
             break;
         case "deleterecurring":
             logState("command.dispatch", "handler.handleDeleteRecurring", "command=deleterecurring");
-            handler.handleDeleteRecurring(userInput);
+            handler.handleDeleteRecurring(normalizedInput);
             break;
         case "list":
             logState("command.dispatch", "printList", "command=list");
@@ -424,7 +426,7 @@ public class FinTrackPro {
             break;
         case "sort":
             logState("command.dispatch", "handler.handleSort", "command=sort, rawInput='" + userInput + "'");
-            handler.handleSort(userInput.trim());
+            handler.handleSort(normalizedInput);
             break;
         case "save":
             logger.info("state=command.dispatch | expected=handler.handleSaveMonth | command=save");
