@@ -332,7 +332,7 @@ Java sorting utilities can order expenses by category without any sorting logic 
 
 #### Class Diagram
 
-![Class Diagram](diagram/ArchiveExpense-ClassDiagram.jpg)
+![Class Diagram](diagram/ArchiveExpense-ClassDiagram.png)
 The above class diagram illustrates the design of the month archiving feature and the classes that directly participate
 in it.
 
@@ -350,24 +350,27 @@ items. All archived entries are represented uniformly as ArchivedExpense, so lis
 records through a consistent
 format.
 
-#### Sequence Diagram
+#### Sequence Diagram: Saving Archived Expenses
 
-![Sequence Diagram](diagram/ArchiveExpense-SequenceDiagram.jpg)
-The ArchiveExpense sequence diagram illustrates two runtime flows: saving a month and displaying archived history.
+![Sequence Diagram](diagram/ArchiveExpense-SaveSequenceDiagram.png)
+This sequence diagram shows the runtime flow when the user executes `save`.
 
-In the save flow, the user enters the `save` command, and CommandHandler creates and uses MonthlyArchive, and invokes
-monthly save logic. MonthlyArchive
-iterates through current one-time and recurring expense collections, then writes archive rows into the month's archive
-file (MonthN).
+`CommandHandler` invokes the month archival operation through `MonthlyArchive`, which reads current one-off and
+recurring expense data and persists them into the current month file (`MonthN`) under `monthly_archives/`.
 
-After successful persistence, control returns to CommandHandler, which continues month advancement and post-save
-updates.
+After a successful write, control returns to `CommandHandler`, which continues the post-save flow (month advancement,
+monthly reset, and savings carry-over).
 
-In the list flow, the user enters `list`, and FinTrackPro requests archive data from MonthlyArchive for previous months.
-MonthlyArchive
-reads each MonthN file and reconstructs rows as `List<ArchivedExpense>`. FinTrackPro then iterates through these
-archived entries (name, amount, category)
-to print month-grouped history and totals.
+#### Sequence Diagram: Displaying Archived Expenses
+
+![Sequence Diagram](diagram/ArchiveExpense-DisplaySequenceDiagram.png)
+This sequence diagram shows the runtime flow when the user executes `list`.
+
+`FinTrackPro` requests archived data from `MonthlyArchive` for previously saved months. `MonthlyArchive` reads each
+`MonthN` archive file and reconstructs entries as `List<ArchivedExpense>`.
+
+`FinTrackPro` then iterates through the reconstructed entries and prints the month-by-month sections and totals in the
+CLI output.
 
 ### Managing Profile
 
@@ -399,7 +402,7 @@ runs `performInitialSetup()` before entering the command loop. The steps are:
 
 1. The user is prompted for their **name**.
 2. The user provides their **current savings** and **monthly allowance** (validated by `InputUtil.readMoney()`).
-3. The user provides the **total house price** and their **contribution ratio** (0.0–1.0, validated by
+3. The user provides the **total house price** and their **contribution ratio** (0.01–1.0, validated by
    `InputUtil.readRatio()`).
 4. `BtoCalculator` computes the **total downpayment** (base of 2.5% of house price, plus legal fees
    equal to 110% of that base, totalling 5.25% of house price) and the user's **personal share**
@@ -423,6 +426,9 @@ Three commands allow the user to update their profile after initial setup:
 
 All three handlers use `InputUtil.readMoney()` or `InputUtil.readRatio()` to enforce valid input,
 re-prompting the user on invalid entries rather than throwing an exception to the caller.
+
+> **Design note — `savings` is deposit-only, with no undo.**
+> `handleSavings()` always adds to `currentSavings`; there is no subtract or undo operation. This is intentional: the command models a real-world cash deposit, where a user records money they have set aside. Allowing negative adjustments was considered but excluded from scope to keep the command surface minimal and to avoid introducing a separate correction workflow. Users who enter an incorrect amount must perform a `reset` (losing all data) or edit `fintrack.txt` directly — both of which are intentionally high-friction to discourage casual misuse.
 
 ![Sequence Diagram](diagram/ProfileRatio-SequenceDiagram.png)
 
@@ -530,10 +536,12 @@ R | Netflix | 10.90 | ENTERTAINMENT
 
 This snapshot illustrates three key design points:
 
-1. **All Profile fields are restored** — all eight fields (name, allowance, savings, BTO goal, ratio,
-   deadline, `currentMonth`, `housePrice`) are written by the current save format and fully restored
-   on load. The checks for missing 8th and 9th segments exist only for backward compatibility with
-   save files produced by older versions of the application.
+1. **All Profile fields are restored** — all eight data fields (name, allowance, savings,
+    BTO goal, ratio, deadline, `currentMonth`, and `housePrice`) are written by the current
+    save format and fully restored on load. The `loadProfile` method checks for the presence
+    of the 8th token (`currentMonth`, at index 7) and 9th token (`housePrice`, at index 8)
+    to maintain backward compatibility with save files from older versions of the application
+    that did not yet include these fields.
 2. **Insertion order is preserved** — `e1` has `insertionOrder = 0` and `e2` has
    `insertionOrder = 1`, meaning a subsequent `sort recent` command will restore this exact sequence.
 3. **Recurring and one-off expenses are held separately** — `expenseList` and `recurringList` are
@@ -744,7 +752,7 @@ clear downpayment plan - showing how much the individual needs to save and wheth
 
 * *BTO (Build-To-Order)* - a subsidized public housing option scheme in Singapore where new flats are constructed only
   after a sufficient number of units (typically 65-70%) have been pre-booked by applicants
-* *Contribution ratio* - the user's fractional share of the downpayment (0.0 to 1.0)
+* *Contribution ratio* - the user's fractional share of the downpayment (0.01 to 1.0)
 * *Recurring expenses* - expenses that occur every month at a fixed rate (e.g. a Netflix subscription of $5.98/month)
 * *Adjusted Minimum Savings* - minimum amount you need to save per month given your distance to goal and number of
   months remaining till the deadline
@@ -831,9 +839,9 @@ a valid profile before testing profile-dependent commands.
 3. **Updating contribution ratio**
     1. Prerequisites: Application started and house price set during initial setup.
     2. Test case: Enter `ratio`, then enter `0.5`. Expected: Ratio set to 0.5; BTO goal recalculated and confirmed.
-    3. Test case: Enter `ratio`, then enter `0.0` or `1.0`. Expected: Boundary values accepted; BTO goal recalculated.
+    3. Test case: Enter `ratio`, then enter `0.01` or `1.0`. Expected: Boundary values accepted; BTO goal recalculated.
     4. Test case: Enter `ratio`, then enter `1.5`. Expected: Error shown for value above 1.0, user re-prompted.
-    5. Test case: Enter `ratio`, then enter `-0.1`. Expected: Error shown for negative value, user re-prompted.
+    5. Test case: Enter `ratio`, then enter `0` or `-0.1`. Expected: Error shown for value below minimum, user re-prompted.
     6. Test case: Enter `ratio`, then enter `abc`. Expected: Error shown for non-numeric input, user re-prompted.
     7. Test case: Enter `ratio`, then enter `0.123`. Expected: Error shown for more than 2 decimal places, user
        re-prompted.
@@ -865,9 +873,12 @@ a valid profile before testing profile-dependent commands.
 2. **System reset**
     1. Prerequisites: Application is running with an existing profile and expenses.
     2. Test case: `reset`, then enter `y` when prompted. Expected: Success message shown. All profile data and all
-       expense lists (one-off and recurring) are wiped.
-    3. Test case: Restarting the app after a successful `reset`. Expected: App triggers the "Initial Setup" sequence (
-       asking for name, etc.) as the save file is now empty.
+       expense lists (one-off and recurring) are wiped. Initial Setup sequence begins immediately in the same
+       session without requiring a restart.
+    3. Test case: `reset`, then enter `n` when prompted. Expected: Reset aborted message shown. All data remains
+       unchanged.
+    4. Test case: Complete the Initial Setup sequence after a successful reset. Expected: New profile is saved to
+       disk immediately. Running `list` shows an empty expense list reflecting the fresh state.
 
 ---
 
@@ -930,7 +941,8 @@ a valid profile before testing profile-dependent commands.
 2. **Handling corrupted data in fintrack.txt**
     1. Prerequisites: Application is closed.
     2. Test case: Manually edit `fintrack.txt` and change an expense amount to `abc`. Start the application.
-    3. Expected: Application starts normally. Other valid data is loaded successfully.
+    3. Expected: Application starts normally. The corrupted line is skipped and other valid data is loaded successfully.
+       A warning entry is written to the log file.
 
 3. **Backward compatibility (Missing Month Data)**
     1. Prerequisites: Application is closed.

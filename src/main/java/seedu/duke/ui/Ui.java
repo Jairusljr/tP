@@ -105,21 +105,21 @@ public class Ui {
         printLine("");
 
         printLine("Daily Transaction Commands");
-        printLine("'add'      <name> <amount> <category> <recurring> - " +
+        printLine("'add'      NAME AMOUNT CATEGORY RECURRING - " +
                 "add a new expense" +   "\n(e.g., add lunch 5.50 FOOD for not recurring and" +
                 " add lunch 5.50 FOOD recurring for recurring)" +
                 "\n(Valid categories to add: FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER)");
         printLine("'list'     - view all current expenses and your total spent");
-        printLine("'delete'   <index> - remove a specific expense from your list");
-        printLine("'deleterecurring' <index> - remove a recurring monthly expense");
+        printLine("'delete'   INDEX - remove a specific expense from your list");
+        printLine("'deleterecurring' INDEX - remove a recurring monthly expense");
         printLine("");
 
         printLine("Profile & Goal Management");
-        printLine("'sort'   <keyword> - sort the expenditure list by category, alphabetical order or recency " +
+        printLine("'sort'   KEYWORD - sort the expenditure list by category, alphabetical order or recency " +
                 "(e.g sort name, sort recent, sort category)");
         printLine("'savings'   - add a surplus amount to your existing savings");
         printLine("'allowance' - update your monthly allowance");
-        printLine("'ratio'     - update your BTO contribution ratio (0.0 to 1.0, max 2 dp)");
+        printLine("'ratio'     - update your BTO contribution ratio (0.01 to 1.0, max 2 dp)");
         printLine("'save'      - archive current month's expenses and advance to next month");
         printLine("'clear'   - wipe all current expenses from the list");
         printLine("'reset'   - wipes all profile data and expenses to start fresh.");
@@ -141,7 +141,7 @@ public class Ui {
      * Displays the current contribution ratio in both percentage and decimal formats,
      * then prompts the user for a new decimal input.
      *
-     * @param currentRatio The existing contribution ratio (0.0 to 1.0) from the User's profile.
+     * @param currentRatio The existing contribution ratio (0.01 to 1.0) from the User's profile.
      */
     public void promptForRatio(BigDecimal currentRatio) {
         assert currentRatio != null : "Current ratio cannot be null for display";

@@ -22,6 +22,13 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class CommandHandler {
+    private static final String SAVE_CONFIRMATION_PROMPT =
+            "Are you sure you want to save this month's expenditures? You will not be able to update once you press "
+                    + "Y\n(press Y to confirm, any key to abort)";
+
+    private static final String ADD_FORMAT_MESSAGE = "Invalid add format. Use: add NAME AMOUNT CATEGORY "
+            + "[RECURRING]. Try again!\n";
+
     /**
      * Logger for recording command handler events.
      * Routes all output to the central {@code logs/fintrack.log} via {@link LoggerUtil}.
@@ -88,10 +95,11 @@ public class CommandHandler {
      */
     public void handleAdd(String userInput) {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("add") : "Input should start with 'add'";
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("add") : "Input should start with 'add'";
 
         try {
-            AddArguments args = parseAddArguments(userInput);
+            AddArguments args = parseAddArguments(normalizedInput);
             if (args.recurring) {
                 int oldSize = recurringExpenseList.size();
                 recurringExpenseList.add(new RecurringExpense(args.name, args.amount, args.category));
@@ -144,48 +152,83 @@ public class CommandHandler {
      */
     private AddArguments parseAddArguments(String userInput) throws InvalidAmountException, InvalidCategoryException {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("add") : "Input should start with 'add'";
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("add") : "Input should start with 'add'";
 
-        String rest = userInput.substring("add".length()).trim();
+        String rest = normalizedInput.substring("add".length()).trim();
 
         if (rest.isEmpty()) {
             logger.warning("handleAdd rejected | reason: empty input");
-            throw new InvalidAmountException("Format: add <name> <amount> <category>\n");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
         }
 
         String[] parts = rest.split("\\s+");
-        boolean recurring = parts[parts.length - 1].equalsIgnoreCase("recurring");
 
-        if (!recurring && parts.length < 3) {
+        int recurringCount = 0;
+        java.util.ArrayList<String> filteredParts = new java.util.ArrayList<>();
+
+        for (String part : parts) {
+            if (part.equalsIgnoreCase("recurring")) {
+                recurringCount++;
+            } else {
+                filteredParts.add(part);
+            }
+        }
+
+        boolean recurring = recurringCount > 0;
+
+        if (recurringCount > 1) {
+            logger.warning("handleAdd rejected | reason: multiple recurring flags");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
+        }
+
+        if ((!recurring && filteredParts.size() < 3) || (recurring && filteredParts.size() < 3)) {
             logger.warning("handleAdd rejected | reason: insufficient arguments");
-            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+            throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
         }
 
-        if (recurring && parts.length < 4) {
-            logger.warning("handleAdd rejected | reason: insufficient arguments for recurring expense");
-            throw new InvalidAmountException("Format: add <name> <amount> <category> [recurring]\n");
+        // Detect trailing junk such as:
+        // add lunch 5 FOOD extra arguments
+        // add lunch 5 FOOD recurring extra arguments
+        if (filteredParts.size() >= 4) {
+            String possibleAmount = filteredParts.get(filteredParts.size() - 2);
+            String possibleCategory = filteredParts.get(filteredParts.size() - 1);
+
+            boolean amountAtExpectedSpot =
+                    possibleAmount.matches("-\\d+(\\.\\d+)?") || possibleAmount.matches("\\d+(\\.\\d+)?");
+            boolean categoryAtExpectedSpot = Category.isValid(possibleCategory);
+
+            if (!amountAtExpectedSpot || !categoryAtExpectedSpot) {
+                boolean hasNumericEarlier = false;
+                boolean hasValidCategoryEarlier = false;
+
+                for (int i = 0; i < filteredParts.size() - 2; i++) {
+                    String token = filteredParts.get(i);
+                    if (token.matches("-\\d+(\\.\\d+)?") || token.matches("\\d+(\\.\\d+)?")) {
+                        hasNumericEarlier = true;
+                    }
+                    if (Category.isValid(token)) {
+                        hasValidCategoryEarlier = true;
+                    }
+                }
+
+                if (hasNumericEarlier && hasValidCategoryEarlier) {
+                    logger.warning("handleAdd rejected | reason: too many trailing arguments");
+                    throw new InvalidAmountException("Format: add <NAME> <AMOUNT> <CATEGORY> [RECURRING]\n");
+                }
+            }
         }
 
-        String categoryString;
-        String amountString;
-        int nameEndExclusive;
-
-        if (recurring) {
-            categoryString = parts[parts.length - 2];
-            amountString = parts[parts.length - 3];
-            nameEndExclusive = parts.length - 3;
-        } else {
-            categoryString = parts[parts.length - 1];
-            amountString = parts[parts.length - 2];
-            nameEndExclusive = parts.length - 2;
-        }
+        String categoryString = filteredParts.get(filteredParts.size() - 1);
+        String amountString = filteredParts.get(filteredParts.size() - 2);
+        int nameEndExclusive = filteredParts.size() - 2;
 
         StringBuilder nameBuilder = new StringBuilder();
         for (int i = 0; i < nameEndExclusive; i++) {
             if (i > 0) {
                 nameBuilder.append(" ");
             }
-            nameBuilder.append(parts[i]);
+            nameBuilder.append(filteredParts.get(i));
         }
 
         String name = nameBuilder.toString();
@@ -202,8 +245,8 @@ public class CommandHandler {
 
         if (!Category.isValid(categoryString)) {
             logger.warning("handleAdd rejected | reason: invalid category " + categoryString);
-            throw new InvalidCategoryException("Invalid category! Valid categories: " +
-                    "FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER\n");
+            throw new InvalidCategoryException("Invalid category! Valid categories: "
+                    + "FOOD, TRANSPORT, ENTERTAINMENT, UTILITIES, OTHER\n");
         }
 
         if (amountString.matches("-\\d+(\\.\\d+)?")) {
@@ -211,7 +254,7 @@ public class CommandHandler {
         }
 
         if (!amountString.matches("\\d+(\\.\\d+)?")) {
-            throw new InvalidAmountException("Amount must be a plain number.\n");
+            throw new InvalidAmountException(ADD_FORMAT_MESSAGE);
         }
 
         BigDecimal amount = parseAmount(amountString);
@@ -234,10 +277,13 @@ public class CommandHandler {
      */
     public void handleDelete(String userInput) {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("delete") : "Input should start with 'delete'";
+        //trims whitespaces
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("delete") : "Input should start with 'delete'";
 
         try {
-            String rest = userInput.substring("delete".length()).trim();
+            String rest = getString(normalizedInput, "delete");
+
             int index = parseDeleteIndex(rest);
 
             BigDecimal oldTotal = expenseList.getTotal();
@@ -251,7 +297,7 @@ public class CommandHandler {
                             + " | removed: $" + removed.getAmount()
                             + " | new total: $" + expenseList.getTotal());
 
-            ui.printLine("Deleted expense #" + index + ": $" + removed);
+            ui.printLine("Deleted expense #" + index + ": " + removed);
             ui.printLine("Current Total: $" + expenseList.getTotal());
             ui.printLine("");
         } catch (InvalidIndexException e) {
@@ -260,6 +306,22 @@ public class CommandHandler {
             ui.printLine(e.getMessage());
         }
     }
+
+    private static String getString(String userInput, String commandWord) throws InvalidIndexException {
+        String rest = userInput.substring(commandWord.length()).trim();
+
+        String[] tokens = rest.split("\\s+");
+        if (rest.isEmpty() || tokens.length != 1) {
+            throw new InvalidIndexException(
+                    """
+                            Wrong Format Bro!!!
+                            For one-off expenses: delete <INDEX>
+                            For recurring expenses: deleterecurring <INDEX>
+                            """);
+        }
+        return rest;
+    }
+
     /**
      * Handles the deletion of a recurring expense based on user input.
      *
@@ -284,10 +346,11 @@ public class CommandHandler {
      */
     public void handleDeleteRecurring(String userInput) {
         assert userInput != null : "User input should not be null";
-        assert userInput.startsWith("deleterecurring") : "Input should start with 'deleterecurring'";
+        String normalizedInput = userInput.trim();
+        assert normalizedInput.startsWith("deleterecurring") : "Input should start with 'deleterecurring'";
 
         try {
-            String rest = userInput.substring("deleterecurring".length()).trim();
+            String rest = getString(normalizedInput, "deleterecurring");
 
             if (rest.isEmpty()) {
                 throw new InvalidIndexException("Format: deleterecurring <index>\n");
@@ -409,6 +472,7 @@ public class CommandHandler {
 
     /**
      * Displays the current contribution ratio and prompts the user to update it.
+     * The ratio must be between 0.01 (1%) and 1.0 (100%).
      *
      * @param in Scanner used to read the user's input.
      */
@@ -420,7 +484,7 @@ public class CommandHandler {
 
         // Show current state
         ui.promptForRatio(current);
-        BigDecimal newRatio = InputUtil.readRatio(ui, in, "Enter new ratio (0.0 to 1.0):");
+        BigDecimal newRatio = InputUtil.readRatio(ui, in, "Enter new ratio (0.01 to 1.0):");
         ui.printLine("");
 
         profile.setContributionRatio(newRatio);
@@ -632,7 +696,16 @@ public class CommandHandler {
      * </ul>
      * </p>
      */
-    public void handleSaveMonth() {
+    public void handleSaveMonth(Scanner in) {
+        assert in != null : "Scanner should not be null";
+
+        String response = ui.readLine(in, SAVE_CONFIRMATION_PROMPT).trim().toLowerCase();
+        if (!response.equals("y")) {
+            logger.info("handleSaveMonth cancelled | user did not confirm save");
+            ui.printLine("Save cancelled. Your current month's data is still editable.");
+            ui.printLine("");
+            return;
+        }
 
         int currentMonth = profile.getCurrentMonth();
         BigDecimal monthlyExpenses = expenseList.getTotal().add(recurringExpenseList.getTotal());
